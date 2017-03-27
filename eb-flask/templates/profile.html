@@ -1,0 +1,74 @@
+{% extends "layout.html" %}
+{% block title %}{{ name }} - Profile{% endblock %}
+{% block head %}
+    {{ super() }}
+    <meta name="theme-color" content="#dcb0a5">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,  maximum-scale=1.0, user-scalable=no">
+    <meta property="og:title" content="{{ name }} - Profile">
+    <meta property="og:type" content="profile">
+    <meta property="og:url" content="{{ url_for('user', name=name) }}">
+    <meta property="og:image" content="https://asimshrestha2.github.io/portfoliov2/imgs/Asim_Ymir.png">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@Asim_Shresth">
+    <meta name="twitter:title" content="{{ name }} - Profile">
+    <meta name="twitter:description" content="{{ name }} - Profile">
+    <meta name="twitter:image" content="https://asimshrestha2.github.io/portfoliov2/imgs/Asim_Ymir.png">
+{% endblock %}
+{% block content %}
+  <div class="profile-header row-big">
+    <div class="profile-info">
+      <div class="profile-pic">
+        <img src="./Screenshots/Home.png">
+      </div>
+      <div class="text">
+        {% if name %}
+          <div class="username">{{ name }}</div>
+        {% else %}
+          <div class="username">Name Not Found</div>
+        {% endif %}
+        <div class="title">Apples</div>
+      </div>
+    </div>
+  </div>
+  <div class="profile-stats row-big">
+    <div class="stat">
+      <div class="title">
+        Ratings
+      </div>
+      <div class="rating">
+        <div class="name">
+          Something
+        </div>
+        <div class="progressbar">
+          <div class="bar" style="width: 20%"></div>
+        </div>
+      </div>
+      <div class="rating">
+        <div class="name">
+          Something
+        </div>
+        <div class="progressbar">
+          <div class="bar" style="width: 60%"></div>
+        </div>
+      </div>
+    </div>
+    <div class="stat">
+      <div class="title">
+        Ratings
+      </div>
+      <div class="rating">
+        <div class="name">
+          Something
+        </div>
+        <div class="progressbar">
+          <div class="bar" style="width: 50%"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="profile-events">
+    <div class="p-event">
+
+    </div>
+  </div>
+{% endblock %}

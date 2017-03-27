@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block head %}
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="icon" href="https://asimshrestha2.github.io/portfoliov2/imgs/Asim_Ymir.png">
+    <title>{% block title %}{% endblock %}</title>
+    {% endblock %}
+</head>
+<body>
+  <header class="sub-page">
+    <div class="top-nav">
+      <div class="row-big">
+        <div class="title">
+          Theme 1
+        </div>
+        <nav>
+          <ul class="top-buttons">
+            <li><div class="btn">Button 1</div></li>
+            <li><div class="btn">Button 2</div></li>
+            <li><div class="btn">Button 3</div></li>
+            <li><div class="btn">Button 4</div></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+  <div class="content">{% block content %}{% endblock %}</div>
+  <footer>
+    <div class="legal">
+      Copyright (c) 2017 Asim Shrestha. All Rights Reserved.
+    </div>
+  </footer>
+</body>
+</html>
