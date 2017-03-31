@@ -1,4 +1,4 @@
-html, body, div, input[type=text], p{
+html, body, div, input[type=text], input[type=password], p{
   margin: 0;
   padding: 0;
   font-family: 'Open Sans', sans-serif;
@@ -39,6 +39,19 @@ a:hover{
   max-width: 1200px;
   margin: 0 auto;
 }
+
+.row-mid{
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.row-small{
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
 .top-nav .title{
   float: left;
   font-size: 32px;
@@ -98,7 +111,8 @@ a:hover{
   background: #FFFFFF;
 }
 
-input[type=text] {
+input[type=text], input[type=password] {
+  position: relative;
   background: none;
   border: none;
   outline: none;
@@ -126,25 +140,33 @@ input[type=text] {
   width: 100%;
 }
 
-#search[value=""] + label{
+#search + label{
+  color: #EEEEEE;
+}
+
+.input-field{
+  position: relative;
+  margin: 20px auto;
+}
+
+input[type=text][value=""] + label, input[type=password][value=""] + label{
   top: auto;
   bottom: 5px;
   left: 0px;
   font-size: 16px;
 }
 
-#search:focus + label{
+input[type=text]:focus + label, input[type=password]:focus + label{
   bottom: 26px;
   left: 0px;
   font-size: 12px;
 }
 
-#search + label{
+input[type=text] + label, input[type=password] + label{
   position: absolute;
   bottom: 26px;
   left: 0px;
   font-size: 12px;
-  color: #EEEEEE;
   transition: all 275ms linear;
 }
 
@@ -175,6 +197,7 @@ input[type=text] {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
+  align-items: stretch;
 }
 
 .list{
@@ -231,12 +254,13 @@ footer .legal{
   color: #FFFFFF;
 }
 
-/*Event Page*/
 header.sub-page{
   position: fixed;
   top: 0;
+  z-index: 999;
 }
 
+/*Event Page*/
 .event{
   box-shadow: 0 2px 5px #e1e1e1;
 }
@@ -362,4 +386,16 @@ header.sub-page{
 .rating .name{
   padding: 5px 0;
   font-style: italic;
+}
+
+/* Login */
+.login{
+  padding: 20px;
+  background: #FFFFFF;
+  box-shadow: 0 2px 5px #e1e1e1;
+}
+
+.login input[type=text], .login input[type=password]{
+  border-bottom: 1px solid #000000;
+  width: 100%;
 }
