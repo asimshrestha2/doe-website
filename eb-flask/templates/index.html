@@ -4,21 +4,18 @@
     <meta charset="utf-8">
     <title>DOE - Event Page</title>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
-    <link rel="stylesheet" href="static/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   </head>
   <body>
     <header class="main">
       <div class="top-nav">
         <div class="row-big">
           <div class="title">
-            Theme 1
+            DOE
           </div>
           <nav>
             <ul class="top-buttons">
-              <li><div class="btn">Button 1</div></li>
-              <li><div class="btn">Button 2</div></li>
-              <li><div class="btn">Button 3</div></li>
-              <li><div class="btn">Button 4</div></li>
+              <li><div class="btn">Login<a class="btn-fill" href="{{ url_for('login') }}"><div class="btn-fill"></div></a></div></li>
             </ul>
           </nav>
         </div>

@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block title %}Login - DOE{% endblock %}
+{% block head %}
+    {{ super() }}
+    <meta name="theme-color" content="#dcb0a5">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,  maximum-scale=1.0, user-scalable=no">
+    <meta property="og:title" content="Login - DOE">
+    <meta property="og:type" content="profile">
+    <meta property="og:url" content="{{ url_for('login', name=name) }}">
+    <meta property="og:image" content="https://asimshrestha2.github.io/portfoliov2/imgs/Asim_Ymir.png">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@Asim_Shresth">
+    <meta name="twitter:title" content="Login - DOE">
+    <meta name="twitter:description" content="Login - DOE">
+    <meta name="twitter:image" content="https://asimshrestha2.github.io/portfoliov2/imgs/Asim_Ymir.png">
+{% endblock %}
+{% block content %}
+  <form class="login" action="/login" method="post">
+    <input type="text" name="username" value=""><br>
+    <input type="password" name="password" value=""><br>
+    <input type="submit" name="submit" value="login">
+  </form>
+{% endblock %}
