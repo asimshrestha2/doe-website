@@ -1,30 +1,30 @@
 {% extends "layout.html" %}
-{% block title %}{{ name }} - Event{% endblock %}
+{% block title %}{{ event.name }} - Event{% endblock %}
 {% block head %}
     {{ super() }}
     <meta name="theme-color" content="#dcb0a5">
     <meta name="viewport" content="width=device-width, initial-scale=1.0,  maximum-scale=1.0, user-scalable=no">
-    <meta property="og:title" content="{{ name }} - Event">
+    <meta property="og:title" content="{{ event.name }} - Event">
     <meta property="og:type" content="profile">
-    <meta property="og:url" content="{{ url_for('event', name=name) }}">
+    <meta property="og:url" content="{{ url_for('event', event=event) }}">
     <meta property="og:image" content="https://asimshrestha2.github.io/portfoliov2/imgs/Asim_Ymir.png">
     <meta name="twitter:card" content="summary">
     <meta name="twitter:site" content="@Asim_Shresth">
-    <meta name="twitter:title" content="{{ name }} - Event">
-    <meta name="twitter:description" content="{{ name }} - Event">
+    <meta name="twitter:title" content="{{ event.name }} - Event">
+    <meta name="twitter:description" content="{{ event.name }} - Event">
     <meta name="twitter:image" content="https://asimshrestha2.github.io/portfoliov2/imgs/Asim_Ymir.png">
 {% endblock %}
 {% block content %}
   <div class="event row-big">
-    <div class="image">
+    <div class="image" style="background: url('{{ event.pictureUrl }}')">
       <div class="text">
-        <div class="title">{{ name }}</div>
-        <div class="subtitle">Sub-Title</div>
+        <div class="title">{{ event.name }}</div>
+        <div class="subtitle">{{ event.location }}</div>
       </div>
     </div>
     <div class="function-bar">
       <div class="created-by">
-        Event Hosted by: Asim Shrestha
+        Event Hosted by: {{ event.host }}
       </div>
       <div class="invite-options">
         <div class="invite-btn">Going</div>
@@ -32,8 +32,8 @@
       </div>
     </div>
     <div class="discription">
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+      <p>{{ event.discription }}</p>
     </div>
-    <div class="fb-comments" data-href="http://localhost:5000/e/{{ name }}" data-width="100%" data-numposts="5"></div>
+    <div class="fb-comments" data-href="http://localhost:5000/e/{{ event.name }}" data-width="100%" data-numposts="5"></div>
   </div>
 {% endblock %}

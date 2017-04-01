@@ -18,15 +18,15 @@
   <div class="profile-header row-big">
     <div class="profile-info">
       <div class="profile-pic">
-        <img src="./Screenshots/Home.png">
+        <img src="{{ user.pictureUrl }}">
       </div>
       <div class="text">
-        {% if name %}
-          <div class="username">{{ name }}</div>
+        {% if user.name %}
+          <div class="username">{{ user.name }}</div>
         {% else %}
           <div class="username">Name Not Found</div>
         {% endif %}
-        <div class="title">Apples</div>
+        <div class="title">{{ user.title }}</div>
       </div>
     </div>
   </div>
@@ -35,22 +35,16 @@
       <div class="title">
         Ratings
       </div>
+      {% for rating in user.rating %}
       <div class="rating">
         <div class="name">
-          Something
+          {{ rating.title }}
         </div>
         <div class="progressbar">
-          <div class="bar" style="width: 20%"></div>
+          <div class="bar" style="width: {{ (rating.rating*10) }}%"></div>
         </div>
       </div>
-      <div class="rating">
-        <div class="name">
-          Something
-        </div>
-        <div class="progressbar">
-          <div class="bar" style="width: 60%"></div>
-        </div>
-      </div>
+      {% endfor %}
     </div>
     <div class="stat">
       <div class="title">

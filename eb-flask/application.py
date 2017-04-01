@@ -10,7 +10,15 @@ def hello():
 @application.route('/u/')
 @application.route('/u/<name>')
 def user(name=None):
-    return render_template('profile.html', name=name)
+    user = {
+        'name': name,
+        'title': 'User',
+        'rating': [{'title': "Support", 'rating': 9},
+            {'title': "Apple", 'rating': 5},
+            {'title': "Potato", 'rating': 8}],
+        'pictureUrl': 'https://asimshrestha2.github.io/portfoliov2/imgs/Asim_Ymir.png'
+    }
+    return render_template('profile.html', user=user)
 
 @application.route('/e/')
 @application.route('/e/<name>')
@@ -18,7 +26,14 @@ def event(name=None):
     if name == None:
         return redirect(url_for('hello'))
     else:
-        return render_template('eventpage.html', name=name)
+        event = {
+            'name': name,
+            'location': "Towson University, Towson, MD",
+            'host': "Asim Shrestha",
+            'discription': "This is the discription from Python",
+            'pictureUrl': 'https://asimshrestha2.github.io/imgs/content/environment.png'
+        }
+        return render_template('eventpage.html', event=event)
 
 # Function for all the login user page
 @application.route('/login', methods=['GET', 'POST'])
