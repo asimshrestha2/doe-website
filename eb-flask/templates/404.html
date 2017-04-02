@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="icon" href="https://asimshrestha2.github.io/portfoliov2/imgs/Asim_Ymir.png">
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
+    <title>404</title>
+    <style>
+    html, body, div{
+      margin: 0;
+    }
+
+    #ani{
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+    </style>
+</head>
+<body>
+  <div id="fb-root"></div>
+  <header class="sub-page" style="box-shadow: none;">
+    <div class="top-nav">
+      <div class="row-big">
+        <div class="title">
+          <a href="{{ url_for('hello') }}">DOE (Should be a picture)</a>
+        </div>
+      </div>
+    </div>
+  </header>
+  <canvas id="ani"></canvas>
+  <script>
+    var canvas = document.getElementById('ani');
+    var c = canvas.getContext('2d');
+
+    var requestAnimationFrame = window.requestAnimationFrame ||
+                          window.mozRequestAnimationFrame ||
+                          window.webkitRequestAnimationFrame ||
+                          window.msRequestAnimationFrame;
+
+    //var v = [[0, 1, 2], [2, 0, 1], [2, 0, 1], [0, 1, 2]];
+
+    function draw() {
+      c.canvas.width = window.innerWidth;
+      //c.canvas.height = 800;
+      c.canvas.height = window.innerHeight;
+
+      var size = c.canvas.width / 4;
+
+      c.clearRect(0, 0, c.canvas.width, c.canvas.height);
+
+
+      var grd=c.createLinearGradient(0,0,0,c.canvas.height);
+      grd.addColorStop(0,"#00B7FF");
+      grd.addColorStop(1,"#FFFFC7");
+
+      c.fillStyle=grd;
+      c.fillRect(0, 0, c.canvas.width, c.canvas.height);
+
+      c.fillStyle="#00A8C5";
+      c.font = "120px Arial";
+      c.textAlign="center";
+      c.fillText("404",c.canvas.width/2, c.canvas.height-100);
+
+      for (var i = 0; i < 2; i++) {
+        triangle(c, "#00A8C5", size*(i-.9), 0, size);
+        triangle(c, "#72cfa5", size*(i-.9), -(size/4), size);
+        triangle(c, "#FFFF7E", size*(i-.9), -(size/2), size);
+      }
+
+      for (var i = 0; i < 2; i++) {
+        triangle(c, "#00A8C5", c.canvas.width-(size*(i+1.1)), 0, size);
+        triangle(c, "#72cfa5", c.canvas.width-(size*(i+1.1)), -(size/4), size);
+        triangle(c, "#FFFF7E", c.canvas.width-(size*(i+1.1)), -(size/2), size);
+      }
+
+      //requestAnimationFrame(draw);
+    }
+
+    window.onload = draw;
+    window.onresize = draw;
+
+    function triangle(c, color, sx, sy, size){
+      c.fillStyle = color;
+      c.beginPath();
+      c.moveTo(sx, c.canvas.height - sy);
+      c.lineTo(sx + (size), c.canvas.height - size - sy);
+      c.lineTo(sx + (size*2), c.canvas.height - sy);
+      c.fill();
+    }
+  </script>
+ </body>
+</html>

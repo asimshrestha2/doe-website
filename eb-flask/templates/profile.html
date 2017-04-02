@@ -4,14 +4,14 @@
     {{ super() }}
     <meta name="theme-color" content="#dcb0a5">
     <meta name="viewport" content="width=device-width, initial-scale=1.0,  maximum-scale=1.0, user-scalable=no">
-    <meta property="og:title" content="{{ name }} - Profile">
+    <meta property="og:title" content="{{ user.name }} - Profile">
     <meta property="og:type" content="profile">
-    <meta property="og:url" content="{{ url_for('user', name=name) }}">
+    <meta property="og:url" content="{{ url_for('user', user=user) }}">
     <meta property="og:image" content="https://asimshrestha2.github.io/portfoliov2/imgs/Asim_Ymir.png">
     <meta name="twitter:card" content="summary">
     <meta name="twitter:site" content="@Asim_Shresth">
-    <meta name="twitter:title" content="{{ name }} - Profile">
-    <meta name="twitter:description" content="{{ name }} - Profile">
+    <meta name="twitter:title" content="{{ user.name }} - Profile">
+    <meta name="twitter:description" content="{{ user.name }} - Profile">
     <meta name="twitter:image" content="https://asimshrestha2.github.io/portfoliov2/imgs/Asim_Ymir.png">
 {% endblock %}
 {% block content %}
