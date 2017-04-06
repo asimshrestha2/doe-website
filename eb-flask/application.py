@@ -5,6 +5,8 @@ application = Flask(__name__)
 
 @application.route('/')
 def hello():
+    if 'username' in session:
+        return 'Logged in as %s' % escape(session['username'])
     return render_template('index.html')
 
 @application.route('/u/')
@@ -39,9 +41,19 @@ def event(name=None):
 @application.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        return "POST Login"
+        session['username'] = request.form['username']
+        return redirect(url_for('hello'))
     else:
         return render_template('login.html')
+
+@application.route('/logout')
+def logout():
+    # remove the username from the session if it's there
+    session.pop('username', None)
+    return redirect(url_for('hello'))
+
+# set the secret key.  keep this really secret:
+application.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 
 @application.errorhandler(404)
 def page_not_found(error):
