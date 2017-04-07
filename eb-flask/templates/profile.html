@@ -62,7 +62,16 @@
   </div>
   <div class="profile-events">
     <div class="p-event">
-
+      <div class="list-card row-big"><!--
+        {% for event in user.events %}
+      --><div class="card">
+          <div class="image" style="background: url('{{ event.pictureUrl }}'); background-size: cover">
+            <div class="title">{{ event.title }}</div>
+          </div>
+          <div class="discription">{{ event.discription }}</div>
+        </div><!--
+        {% endfor %}
+        --></div>
     </div>
   </div>
 {% endblock %}

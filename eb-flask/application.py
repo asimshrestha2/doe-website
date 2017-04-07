@@ -12,13 +12,20 @@ def hello():
 @application.route('/u/')
 @application.route('/u/<name>')
 def user(name=None):
+    # This what the template needs to show all the data on the site
     user = {
         'name': name,
         'title': 'User',
         'rating': [{'title': "Support", 'rating': 9},
             {'title': "Apple", 'rating': 5},
             {'title': "Potato", 'rating': 8}],
-        'pictureUrl': 'https://asimshrestha2.github.io/portfoliov2/imgs/Asim_Ymir.png'
+        'pictureUrl': 'https://asimshrestha2.github.io/portfoliov2/imgs/Asim_Ymir.png',
+        'events': [{'title': "Dance", 'discription': "This is a discription for the dance event that is going on",
+            'pictureUrl': 'http://orig13.deviantart.net/ac10/f/2015/100/c/4/render_4_edited_by_asimshrestha2-d8p8rbi.png'},
+            {'title': "Dance No. 2", 'discription': "This is a discription for the dance event 2 that is going on",
+            'pictureUrl': 'http://orig13.deviantart.net/ac10/f/2015/100/c/4/render_4_edited_by_asimshrestha2-d8p8rbi.png'},
+            {'title': "Dance No. 3", 'discription': "This is a discription for the dance event 3 that is going on",
+            'pictureUrl': 'http://orig13.deviantart.net/ac10/f/2015/100/c/4/render_4_edited_by_asimshrestha2-d8p8rbi.png'}]
     }
     return render_template('profile.html', user=user)
 
