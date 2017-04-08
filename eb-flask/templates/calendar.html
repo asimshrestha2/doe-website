@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+{% block title %}DOE - Calendar{% endblock %}
+{% block head %}
+    {{ super() }}
+    <meta name="theme-color" content="#dcb0a5">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,  maximum-scale=1.0, user-scalable=no">
+    <meta property="og:title" content="DOE - Calendar">
+    <meta property="og:type" content="profile">
+    <meta property="og:url" content="{{ url_for('calendar') }}">
+    <meta property="og:image" content="https://asimshrestha2.github.io/portfoliov2/imgs/Asim_Ymir.png">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@Asim_Shresth">
+    <meta name="twitter:title" content="DOE - Calendar">
+    <meta name="twitter:description" content="DOE - Calendar">
+    <meta name="twitter:image" content="https://asimshrestha2.github.io/portfoliov2/imgs/Asim_Ymir.png">
+{% endblock %}
+{% block content %}
+  <div class="calendar row-mid">
+    <div class="list">
+      <ul id="clist">
+      </ul>
+    </div>
+  </div>
+  <script>
+    var clist = document.getElementById('clist');
+    var today = new Date();
+    var date = today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear();
+    var request = new XMLHttpRequest();
+    request.open('POST', '/calendar', true);
+    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+    request.onreadystatechange = function(e) {
+      if(request.readyState == XMLHttpRequest.DONE && request.status == 200) {
+          var data = JSON.parse(request.responseText);
+          console.log(data);
+          for (var i = 0; i < data.length; i++) {
+            clist.innerHTML += '<li><div class="list-header">' +
+              '<div class="title">'+data[i]['date']+'</div>' +
+              '</div></li>';
+            for (var j = 0; j < data[i]['events'].length; j++) {
+              clist.innerHTML += '<li><div class="list-items">'+
+              '<div class="title">'+data[i]['events'][j]['title']+'</div>'+
+              '<div class="subtitle">'+data[i]['events'][j]['discription']+'</div>'+
+              '<a class="btn-fill" href="/e/'+data[i]['events'][j]['title']+'"><div class="btn-fill"></div></div></li>';
+            }
+          }
+      }
+    }
+    request.send("date="+date);
+  </script>
+{% endblock %}

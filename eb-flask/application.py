@@ -1,4 +1,4 @@
-from flask import Flask, session, render_template, redirect, url_for, escape, request
+from flask import Flask, session, render_template, redirect, url_for, escape, request, json
 import os
 # EB looks for an 'application' callable by default.
 application = Flask(__name__)
@@ -61,6 +61,28 @@ def logout():
 
 # set the secret key.  keep this really secret:
 application.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
+
+@application.route('/calendar', methods=['GET', 'POST'])
+def calendar():
+    if request.method == 'POST':
+        print(request.form['date'])
+        res = [{'date':'8/4/2016', 'events':[{'title': "Event No. 1", 'discription': "This is something"},
+            {'title': "Event No. 2", 'discription': "This is something"},
+            {'title': "Event No. 3", 'discription': "This is something"}]},
+            {'date':'9/4/2016', 'events':[{'title': "Event No. 1", 'discription': "This is something"},
+            {'title': "Event No. 2", 'discription': "This is something"},
+            {'title': "Event No. 3", 'discription': "This is something"}]},
+            {'date':'10/4/2016', 'events':[]},
+            {'date':'11/4/2016', 'events':[{'title': "Event No. 1", 'discription': "This is something"},
+            {'title': "Event No. 2", 'discription': "This is something"}]}]
+        response = application.response_class(
+            response=json.dumps(res),
+            status=200,
+            mimetype='application/json'
+        )
+        return response
+    else:
+        return render_template('calendar.html')
 
 @application.errorhandler(404)
 def page_not_found(error):
