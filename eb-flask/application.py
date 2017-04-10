@@ -53,6 +53,7 @@ def login():
     else:
         return render_template('login.html')
 
+#TODO: Change logout return
 @application.route('/logout')
 def logout():
     # remove the username from the session if it's there
@@ -60,6 +61,7 @@ def logout():
     return redirect(url_for('hello'))
 
 # set the secret key.  keep this really secret:
+#TODO: Change secret_key
 application.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 
 @application.route('/calendar', methods=['GET', 'POST'])
