@@ -63,6 +63,29 @@ a:hover{
   margin: 0 auto;
 }
 
+.col-2{
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.col-2.signup{
+  margin: -20px 0;
+}
+
+.col-2 > div{
+  width: 45%;
+}
+
+.col-2 .input-field{
+  margin: 20px auto 20px 0;
+}
+
+.col-2::after{
+  content: '';
+  clear: both;
+}
+
 .top-nav .title{
   float: left;
   font-size: 32px;
