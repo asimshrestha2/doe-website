@@ -16,7 +16,11 @@
           </div>
           <nav>
             <ul class="top-buttons">
-              <li><div class="btn">Login<a class="btn-fill" href="{{ url_for('login') }}"><div class="btn-fill"></div></a></div></li>
+              {% if session['username'] %}
+                <li><div class="btn">{{ session['username'] }}<a class="btn-fill" href="{{ url_for('user', name = session['username']) }}"><div class="btn-fill"></div></a></div></li>
+              {% else %}
+                <li><div class="btn">Login<a class="btn-fill" href="{{ url_for('login') }}"><div class="btn-fill"></div></a></div></li>
+              {% endif %}
             </ul>
           </nav>
         </div>

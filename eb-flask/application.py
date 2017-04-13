@@ -5,8 +5,6 @@ application = Flask(__name__)
 
 @application.route('/')
 def hello():
-    if 'username' in session:
-        return 'Logged in as %s' % escape(session['username'])
     return render_template('index.html')
 
 @application.route('/u/')
@@ -39,7 +37,7 @@ def event(name=None):
             'name': name,
             'location': "Towson University, Towson, MD",
             'host': "Asim Shrestha",
-            'discription': "This is the discription from Python",
+            'discription': "This is the description from Python",
             'pictureUrl': 'https://asimshrestha2.github.io/imgs/content/environment.png'
         }
         return render_template('eventpage.html', event=event)
@@ -49,7 +47,9 @@ def event(name=None):
 def login():
     if request.method == 'POST':
         session['username'] = request.form['username']
+        session['userType'] = 'user'
         return redirect(url_for('hello'))
+
     else:
         return render_template('login.html')
 
