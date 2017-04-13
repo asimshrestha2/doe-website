@@ -145,6 +145,32 @@ a:hover{
   background: #FFFFFF;
 }
 
+#menu{
+  position: relative;
+}
+
+.menu-content{
+  display: none;
+  position: absolute;
+  right: 0;
+  background: #212121;
+  width: 180px;
+}
+
+.menu-content a{
+  display: block;
+  padding: 20px;
+  text-decoration: none;
+}
+
+.menu-content a:hover{
+  background: #a1a1a1;
+}
+
+.show{
+  display: block;
+}
+
 input[type=text], input[type=password], input[type=email] {
   position: relative;
   background: none;

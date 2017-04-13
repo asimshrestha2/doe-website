@@ -8,4 +8,9 @@ window.onload = function() {
       });
     }
   }
+
+  var menubtn = document.getElementById('menubtn');
+  menubtn.addEventListener('click', function(e) {
+    document.getElementById('menu-content').classList.toggle("show");
+  })
 }
