@@ -1,4 +1,4 @@
-html, body, div, input[type=text], input[type=password], p{
+html, body, div, input[type=text], input[type=password], .login input[type=email], p{
   margin: 0;
   padding: 0;
   font-family: 'Open Sans', sans-serif;
@@ -122,7 +122,7 @@ a:hover{
   background: #FFFFFF;
 }
 
-input[type=text], input[type=password] {
+input[type=text], input[type=password], input[type=email] {
   position: relative;
   background: none;
   border: none;
@@ -160,20 +160,20 @@ input[type=text], input[type=password] {
   margin: 20px auto;
 }
 
-input[type=text][value=""] + label, input[type=password][value=""] + label{
+input[type=text][value=""] + label, input[type=password][value=""] + label, input[type=email][value=""] + label{
   top: auto;
   bottom: 5px;
   left: 0px;
   font-size: 16px;
 }
 
-input[type=text]:focus + label, input[type=password]:focus + label{
+input[type=text]:focus + label, input[type=password]:focus + label, input[type=email]:focus + label{
   bottom: 26px;
   left: 0px;
   font-size: 12px;
 }
 
-input[type=text] + label, input[type=password] + label{
+input[type=text] + label, input[type=password] + label, input[type=email] + label{
   position: absolute;
   bottom: 26px;
   left: 0px;
@@ -461,4 +461,9 @@ header.sub-page{
 
 .calendar .list-header{
   text-align: center;
+}
+
+.signup input[type=text], .signup input[type=password], .signup input[type=email]{
+  border-bottom: 1px solid #000000;
+  width: 100%;
 }

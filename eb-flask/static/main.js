@@ -3,7 +3,7 @@ window.onload = function() {
   for (var i = 0; i < inputHTML.length; i++) {
     if(inputHTML[i].type == "text" || inputHTML[i].type == "password"){
       this.addEventListener("keyup", function(e){
-        inputE = e.srcElement;
+        inputE = e.srcElement || e.target;
         inputE.setAttribute('value', inputE.value);
       });
     }

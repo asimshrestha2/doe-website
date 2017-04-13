@@ -60,6 +60,14 @@ def logout():
     session.pop('username', None)
     return redirect(url_for('hello'))
 
+@application.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == 'POST':
+        session['username'] = request.form['username']
+        return redirect(url_for('hello'))
+    else:
+        return render_template('signup.html')
+
 # set the secret key.  keep this really secret:
 #TODO: Change secret_key
 application.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
