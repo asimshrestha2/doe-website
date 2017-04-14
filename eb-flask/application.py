@@ -94,6 +94,11 @@ def calendar():
     else:
         return render_template('calendar.html')
 
+#TODO: Add more to create event
+@application.route('/createevent')
+def createevent():
+    return(render_template('createevent.html'))
+
 @application.errorhandler(404)
 def page_not_found(error):
     return render_template('404.html'), 404
