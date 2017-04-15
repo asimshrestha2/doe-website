@@ -47,12 +47,18 @@ def event(name=None):
 @application.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        if request.form['password'] == "password":
-            session['username'] = request.form['username']
-            session['userType'] = 'user'
-            return url_for('hello')
-        else:
-            return "-1"
+        #parse in the form data, make sure strings aren't SQL injection
+        username = checkInput(session['username'])
+        password = checkInput(request.form['password'])
+        #execute query to see if valid username password combo
+        row1 = dbconnection.executeQuery("select username from user where user.username = %s and user.password = %s" % (username, password))[0]
+        #if sucessful will continue on, else will throw error inside executeQuery
+        #just some debug stuff for now
+        print('%s' % row1[1], file=sys.stderr)
+        #create some session variables with data that will be used frequently
+        session['username'] = username
+        session['userType'] = 'user'
+        return redirect(url_for('hello'))
     else:
         return render_template('login.html')
 
