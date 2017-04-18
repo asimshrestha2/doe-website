@@ -330,7 +330,7 @@ header.sub-page{
 }
 
 /*Event Page*/
-.event, .createevent{
+.event{
   box-shadow: 0 2px 5px #e1e1e1;
 }
 
@@ -355,11 +355,11 @@ header.sub-page{
   color: #FFFFFF;
 }
 
-.event .image .text .title, .createevent .text .title{
+.event .image .text .title{
   font-size: 32px;
 }
 
-.event .image .text .subtitle, .createevent .text .subtitle{
+.event .image .text .subtitle{
   font-size: 16px;
 }
 
