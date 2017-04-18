@@ -1,54 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    {% block head %}
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <link rel="icon" href="https://asimshrestha2.github.io/portfoliov2/imgs/Asim_Ymir.png">
-    <script src="{{ url_for('static', filename='main.js') }}"></script>
-    <title>{% block title %}{% endblock %}</title>
-    {% endblock %}
-</head>
-<body>
-  <div id="fb-root"></div>
-  <script>(function(d, s, id) {
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return;
-    js = d.createElement(s); js.id = id;
-    js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8&appId=101009160446325";
-    fjs.parentNode.insertBefore(js, fjs);
-  }(document, 'script', 'facebook-jssdk'));</script>
-  <header class="sub-page">
-    <div class="top-nav">
-      <div class="row-big">
-        <div class="title">
-          <a href="{{ url_for('hello') }}">DOE (Should be a picture)</a>
-        </div>
-        <nav>
-          <ul class="top-buttons">
-            {% if session['username'] %}
-              <li><div id="menu"><div class="btn" id="menubtn">Menu</div>
-                  <div class="menu-content" id="menu-content">
-                    <a href="{{ url_for('user', name = session['username']) }}">{{ session['username'] }}</a>
-                    <a href="{{ url_for('logout') }}">Logout</a>
-                  </div>
-                </div>
-              </li>
-            </ul>
-            {% else %}
-              <li><div class="btn">Login<a href="{{ url_for('login') }}"><div class="btn-fill"></div></a></div></li>
-              <li><div class="btn">Sign Up<a href="{{ url_for('signup') }}"><div class="btn-fill"></div></a></div></li>
-            </ul>
-            {% endif %}
-        </nav>
-      </div>
+{% extends "layout.html" %}
+{% block title %}Login - DOE{% endblock %}
+{% block head %}
+    {{ super() }}
+    <meta name="theme-color" content="#dcb0a5">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,  maximum-scale=1.0, user-scalable=no">
+    <meta property="og:title" content="Login - DOE">
+    <meta property="og:type" content="profile">
+    <meta property="og:url" content="{{ url_for('login') }}">
+    <meta property="og:image" content="https://asimshrestha2.github.io/portfoliov2/imgs/Asim_Ymir.png">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@Asim_Shresth">
+    <meta name="twitter:title" content="Login - DOE">
+    <meta name="twitter:description" content="Login - DOE">
+    <meta name="twitter:image" content="https://asimshrestha2.github.io/portfoliov2/imgs/Asim_Ymir.png">
+{% endblock %}
+{% block content %}
+<div class="createevent row-big">
+    <div class="text">
+      <div class="createevent title">Create Event</div>
+      <div class="subtitle">location</div>
     </div>
-  </header>
-  <div class="content">{% block content %}{% endblock %}</div>
-  <footer>
-    <div class="legal">
-      Copyright (c) 2017 Asim Shrestha. All Rights Reserved.
+</div>
+<div class="createevent row-big">
+    <div class="text">
+      <p>This is a paragraph</p>
     </div>
-  </footer>
-</body>
-</html>
+</div>
+{% endblock %}

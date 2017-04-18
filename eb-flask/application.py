@@ -1,6 +1,5 @@
 from flask import Flask, session, render_template, redirect, url_for, escape, request, json
 import os
-import dbconnection
 # EB looks for an 'application' callable by default.
 application = Flask(__name__)
 
@@ -47,12 +46,10 @@ def event(name=None):
 @application.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        if request.form['password'] == "password":
-            session['username'] = request.form['username']
-            session['userType'] = 'user'
-            return url_for('hello')
-        else:
-            return "-1"
+        session['username'] = request.form['username']
+        session['userType'] = 'user'
+        return redirect(url_for('hello'))
+
     else:
         return render_template('login.html')
 
@@ -126,6 +123,5 @@ def dated_url_for(endpoint, **values):
 if __name__ == "__main__":
     # Setting debug to True enables debug output. This line should be
     # removed before deploying a production app.
-    # print(dbconnection.executeQuery("SELECT * FROM user"))
     application.debug = True
     application.run()
