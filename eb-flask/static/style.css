@@ -1,4 +1,4 @@
-html, body, div, input[type=text], input[type=password], .login input[type=email], p{
+html, body, div, input[type=text], input[type=password], .login input[type=email], p, textarea{
   margin: 0;
   padding: 0;
   font-family: 'Open Sans', sans-serif;
@@ -37,6 +37,10 @@ a{
 
 a:hover{
   text-decoration: underline;
+}
+
+.text-center{
+  text-align: center; 
 }
 
 .top-nav{
@@ -143,6 +147,19 @@ a:hover{
 .btn-small:hover{
   color: #000000;
   background: #FFFFFF;
+}
+
+.rect-btn{
+  color: #FFFFFF;
+  padding: 10px;
+  background: linear-gradient(-45deg, #D585FF, #00FFEE);
+  display: inline-block;
+  transition: all 275ms linear;
+  cursor: pointer;
+}
+
+.rect-btn:hover{
+  box-shadow: 0 5px 2px #e1e1e1;
 }
 
 #menu{
@@ -330,8 +347,12 @@ header.sub-page{
 }
 
 /*Event Page*/
-.event{
+.event, .createevent{
   box-shadow: 0 2px 5px #e1e1e1;
+}
+
+.createevent{
+  padding: 20px;
 }
 
 .event .discription{
@@ -355,12 +376,17 @@ header.sub-page{
   color: #FFFFFF;
 }
 
-.event .image .text .title{
+.event .image .text .title, .createevent .text .title{
   font-size: 32px;
 }
 
 .event .image .text .subtitle{
   font-size: 16px;
+}
+/*Create Event*/
+.createvent .text .text-box{
+  width: 100%;
+  border-style: 1px black;
 }
 
 .function-bar{
@@ -424,6 +450,10 @@ header.sub-page{
 
 .profile-info .text .title{
   font-size: 14px;
+}
+
+textarea{
+  width: 100%;
 }
 
 .profile-pic img{
@@ -508,11 +538,15 @@ header.sub-page{
   width: 100%;
 }
 
+.login #signup-link{
+  text-align: center;
+}
+
 .calendar .list-header{
   text-align: center;
 }
 
-.signup input[type=text], .signup input[type=password], .signup input[type=email]{
+.signup input[type=text], .signup input[type=password], .signup input[type=email], .createevent input[type=text]{
   border-bottom: 1px solid #000000;
   width: 100%;
 }
