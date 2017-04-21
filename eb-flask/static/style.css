@@ -40,7 +40,11 @@ a:hover{
 }
 
 .text-center{
-  text-align: center; 
+  text-align: center;
+}
+
+.text-right{
+  text-align: right;
 }
 
 .top-nav{
@@ -155,6 +159,8 @@ a:hover{
   background: linear-gradient(-45deg, #D585FF, #00FFEE);
   display: inline-block;
   transition: all 275ms linear;
+  min-width: 120px;
+  text-align: center;
   cursor: pointer;
 }
 
@@ -164,6 +170,7 @@ a:hover{
 
 #menu{
   position: relative;
+  cursor: pointer;
 }
 
 .menu-content{
@@ -346,6 +353,10 @@ header.sub-page{
   z-index: 999;
 }
 
+.error{
+  color: #FF0000;
+}
+
 /*Event Page*/
 .event, .createevent{
   box-shadow: 0 2px 5px #e1e1e1;
@@ -495,6 +506,7 @@ textarea{
 }
 
 .card{
+  position: relative;
   height: 260px;
   width: 260px;
   margin: 20px;
@@ -539,6 +551,19 @@ textarea{
 }
 
 .login #signup-link{
+  padding-top: 12px;
+  text-align: center;
+}
+
+.login #signup-link a{
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.login .error{
+  padding: 20px 0;
+  font-size: 14px;
   text-align: center;
 }
 
