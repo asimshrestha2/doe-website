@@ -16,6 +16,9 @@
 {% endblock %}
 {% block content %}
   <div class="login row-small">
+    <div class="text">
+      <div class="title">Login</div>
+    </div>
     <div class="input-field">
       <input type="text" name="username" id="username" value="">
       <label for="username">Username</label>
@@ -34,12 +37,21 @@
   var login = document.getElementById('login');
   var log = document.getElementById('log');
   var today = new Date();
-  login.addEventListener('click', function(){
-  var request = new XMLHttpRequest();
-  request.open('POST', '/login', true);
-  request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-  request.onreadystatechange = function(e) {
-    if(request.readyState == XMLHttpRequest.DONE && request.status == 200) {
+  document.addEventListener('keydown', function(e){
+    if (e.keyCode == 13) {
+      loginUser();
+    } else {
+      //console.log(e.keyCode);
+      //Shows KeyCode for the keypressed on the document
+    }
+  });
+  login.addEventListener('click', loginUser);
+  function loginUser(){
+    var request = new XMLHttpRequest();
+    request.open('POST', '/login', true);
+    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+    request.onreadystatechange = function(e) {
+      if(request.readyState == XMLHttpRequest.DONE && request.status == 200) {
         var data = request.responseText;
         //console.log(data);
         if (data == '-1') {
@@ -50,6 +62,6 @@
       }
     }
     request.send("username="+ document.getElementById('username').value + "&password=" + document.getElementById('password').value );
-  });
+  }
   </script>
 {% endblock %}

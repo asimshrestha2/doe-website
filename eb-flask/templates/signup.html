@@ -17,50 +17,53 @@
 {% endblock %}
 {% block content %}
   <div class="signup row-small">
+    <div class="text">
+      <div class="title">Sign Up</div>
+    </div>
+    <div class="input-field">
+      <input type="text" name="username" id="username" value="">
+      <label for="username">Username</label>
+    </div>
+    <div class="input-field">
+      <input type="password" name="password" id="password" value="">
+      <label for="password">Password</label>
+    </div>
+    <div class="input-field">
+      <input type="password" name="confpassword" id="confpassword" value="">
+      <label for="confpassword">Confirm Password</label>
+    </div>
+    <div class="col-2">
       <div class="input-field">
-        <input type="text" name="username" id="username" value="">
-        <label for="username">Username</label>
-      </div>
-      <div class="input-field">
-        <input type="password" name="password" id="password" value="">
-        <label for="password">Password</label>
-      </div>
-      <div class="input-field">
-        <input type="password" name="confpassword" id="confpassword" value="">
-        <label for="confpassword">Confirm Password</label>
-      </div>
-      <div class="col-2 signup">
-        <div class="input-field">
-          <input type="text" name="firstname" id="firstname" value="">
-          <label for="firstname">First Name</label>
-        </div>
-        <div class="input-field">
-          <input type="text" name="lastname" id="lastname" value="">
-          <label for="lastname">Last Name</label>
-        </div>
+        <input type="text" name="firstname" id="firstname" value="">
+        <label for="firstname">First Name</label>
       </div>
       <div class="input-field">
-        <input type="email" name="email" id="email" value="">
-        <label for="email">Email</label>
+        <input type="text" name="lastname" id="lastname" value="">
+        <label for="lastname">Last Name</label>
       </div>
-      <div class="input-field">
-        <input type="text" name="phone" id="phone" value="">
-        <label for="phone">Phone Number</label>
-      </div>
-      <div class="input-field">
-        <input type="text" name="address1" id="address1" value="">
-        <label for="address1">Address Line 1</label>
-      </div>
-      <div class="input-field">
-        <input type="text" name="address2" id="address2" value="">
-        <label for="address2">Address Line 2</label>
-      </div>
-      <div class="input-field">
-        <input type="text" name="zip" id="zip" value="">
-        <label for="zip">ZIP Code</label>
-      </div>
-      <div>
-        <div id="signup" class="rect-btn">Sign Up</div>
-      </div>
+    </div>
+    <div class="input-field">
+      <input type="email" name="email" id="email" value="">
+      <label for="email">Email</label>
+    </div>
+    <div class="input-field">
+      <input type="text" name="phone" id="phone" value="">
+      <label for="phone">Phone Number</label>
+    </div>
+    <div class="input-field">
+      <input type="text" name="address1" id="address1" value="">
+      <label for="address1">Address Line 1</label>
+    </div>
+    <div class="input-field">
+      <input type="text" name="address2" id="address2" value="">
+      <label for="address2">Address Line 2</label>
+    </div>
+    <div class="input-field">
+      <input type="text" name="zip" id="zip" value="">
+      <label for="zip">ZIP Code</label>
+    </div>
+    <div>
+      <div id="signup" class="rect-btn">Sign Up</div>
+    </div>
   </div>
 {% endblock %}
