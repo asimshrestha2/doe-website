@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0,  maximum-scale=1.0, user-scalable=no">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='logo.png') }}">
     <script src="{{ url_for('static', filename='main.js') }}"></script>
   </head>
   <body>
@@ -13,7 +14,7 @@
       <div class="top-nav">
         <div class="row-big">
           <div class="title">
-            DOE
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo">
           </div>
           <nav>
             <ul class="top-buttons">
