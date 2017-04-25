@@ -1,6 +1,7 @@
 from flask import Flask, session, render_template, redirect, url_for, escape, request, json
 import os
-import dbconnection
+from werkzeug.utils import secure_filename
+#import dbconnection
 # EB looks for an 'application' callable by default.
 application = Flask(__name__)
 

@@ -69,6 +69,7 @@
             <div class="title">{{ event.title }}</div>
           </div>
           <div class="discription">{{ event.discription }}</div>
+          <a href="{{ url_for('event', name=event.title) }}"><div class="btn-fill"></div></a>
         </div><!--
         {% endfor %}
         --></div>
