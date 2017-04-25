@@ -1,9 +1,12 @@
 from flask import Flask, session, render_template, redirect, url_for, escape, request, json
 import os
-from werkzeug.utils import secure_filename
-#import dbconnection
+import sys
+import MySQLdb
+import dbconnection
 # EB looks for an 'application' callable by default.
 application = Flask(__name__)
+#instantiate DBManager
+db = dbconnection.DBManager()
 
 @application.route('/')
 def hello():
@@ -48,14 +51,21 @@ def event(name=None):
 @application.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        if request.form['password'] == "password":
-            session['username'] = request.form['username']
-            session['userType'] = 'user'
-            return url_for('hello')
-        else:
-            return "-1"
-    else:
-        return render_template('login.html')
+        #parse in the form data, make sure strings aren't SQL injection
+        username = checkInput(request.form['username'])
+        password = checkInput(request.form['password'])
+        #execute query to see if valid username password combo
+        print(db.loginQuery.format(username,password), file=sys.stderr)
+        row1 = db.executeQuery(db.loginQuery.format(username, password))
+        #if sucessful will continue on, else will throw error inside executeQuery
+        #just some debug stuff for now
+        if row1 is not None:
+            print('%s' % str(row1[0][1]), file=sys.stderr)
+            #create some session variables with data that will be used frequently
+            session['Username'] = row1[6]
+            session['UserType'] = row1[5]
+            return redirect(url_for('hello'))
+    return render_template('login.html')
 
 #TODO: Change logout return
 @application.route('/logout')
@@ -119,6 +129,14 @@ def dated_url_for(endpoint, **values):
             values['q'] = int(os.stat(file_path).st_mtime)
     return url_for(endpoint, **values)
 
+def checkInput(stringInput):
+    #remove whitespace
+    stringInput.strip()
+    return stringInput
+    #remove slashes
+    #stringInput.decode('string_ecape')
+    
+    
 # TODO: Need database class that handles all the database commands and connection
 # TODO: Need a social media api handling class
 # TODO: Handle the Money API
@@ -127,6 +145,5 @@ def dated_url_for(endpoint, **values):
 if __name__ == "__main__":
     # Setting debug to True enables debug output. This line should be
     # removed before deploying a production app.
-    # print(dbconnection.executeQuery("SELECT * FROM user"))
     application.debug = True
     application.run()
