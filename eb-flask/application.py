@@ -1,7 +1,7 @@
 from flask import Flask, session, render_template, redirect, url_for, escape, request, json
 import os
 from werkzeug.utils import secure_filename
-#import dbconnection
+import dbconnection
 # EB looks for an 'application' callable by default.
 application = Flask(__name__)
 
@@ -49,17 +49,22 @@ def event(name=None):
 def login():
     if request.method == 'POST':
         #parse in the form data, make sure strings aren't SQL injection
-        username = checkInput(session['username'])
+        username = checkInput(request.form['username'])
         password = checkInput(request.form['password'])
         #execute query to see if valid username password combo
-        row1 = dbconnection.executeQuery("select username from user where user.username = %s and user.password = %s" % (username, password))[0]
-        #if sucessful will continue on, else will throw error inside executeQuery
-        #just some debug stuff for now
-        print('%s' % row1[1], file=sys.stderr)
+        row1 = dbconnection.executeQuery("select * from user where username='{}' and password='{}'".format(username, password))[0]
+
         #create some session variables with data that will be used frequently
-        session['username'] = username
-        session['userType'] = 'user'
-        return redirect(url_for('hello'))
+        if not row1:
+            # Returns if no user
+            return "-1"
+        else:
+            #if sucessful will continue on, else will throw error inside executeQuery
+            #just some debug stuff for now
+            print('%s' % row1[0]) #, file=sys.stderr
+            session['username'] = username
+            session['userType'] = 'User'
+            return url_for('hello')
     else:
         return render_template('login.html')
 
@@ -68,13 +73,38 @@ def login():
 def logout():
     # remove the username from the session if it's there
     session.pop('username', None)
+    session.pop('userType', None)
     return redirect(url_for('hello'))
 
 @application.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
-        session['username'] = request.form['username']
-        return redirect(url_for('hello'))
+        #parse in the form data, make sure strings aren't SQL injection
+        name = checkInput(request.form['firstname'] + request.form['lastname'])
+        email = checkInput(request.form['email'])
+        phone_num = checkInput(request.form['phone'])
+        uzip = checkInput(request.form['zip'])
+        user_type = 'User'
+        username = checkInput(request.form['username'])
+        password = checkInput(request.form['password'])
+        user_address = checkInput(request.form['address'])
+        #execute query to see if valid username password combo
+        row1 = dbconnection.executeQuery("""
+            INSERT INTO user(name, email, phone_num, zip, user_type, username, password, user_address)
+            VALUES('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}')
+            """.format(name, email, phone_num, uzip, user_type, username, password, user_address))[0]
+
+        #create some session variables with data that will be used frequently
+        if not row1:
+            # Returns if no user
+            return "-1"
+        else:
+            #if sucessful will continue on, else will throw error inside executeQuery
+            #just some debug stuff for now
+            print('%s' % row1[1]) #, file=sys.stderr
+            session['username'] = username
+            session['userType'] = 'User'
+            return url_for('hello')
     else:
         return render_template('signup.html')
 
@@ -128,7 +158,8 @@ def dated_url_for(endpoint, **values):
 # TODO: Need database class that handles all the database commands and connection
 # TODO: Need a social media api handling class
 # TODO: Handle the Money API
-
+def checkInput(arg):
+    return arg
 # run the app.
 if __name__ == "__main__":
     # Setting debug to True enables debug output. This line should be
