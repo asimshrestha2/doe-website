@@ -15,17 +15,14 @@
     <meta name="twitter:image" content="https://asimshrestha2.github.io/portfoliov2/imgs/Asim_Ymir.png">
 {% endblock %}
 {% block content %}
+  {% if user.name %}
   <div class="profile-header row-big">
     <div class="profile-info">
       <div class="profile-pic">
         <img src="{{ user.pictureUrl }}">
       </div>
       <div class="text">
-        {% if user.name %}
-          <div class="username">{{ user.name }}</div>
-        {% else %}
-          <div class="username">Name Not Found</div>
-        {% endif %}
+        <div class="username">{{ user.name }}</div>
         <div class="title">{{ user.title }}</div>
       </div>
     </div>
@@ -75,4 +72,7 @@
         --></div>
     </div>
   </div>
+  {% else %}
+    <div class="username text-center">Username missing.</div>
+  {% endif %}
 {% endblock %}

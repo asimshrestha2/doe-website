@@ -1,5 +1,7 @@
 import MySQLdb
+
 class DBManager:
+
     #Query for logging in 
     loginQuery = r"""select * from user where '{}' = username and '{}' = password"""
     
@@ -25,5 +27,4 @@ class DBManager:
 
         c.close()
         db.close()
-
 
