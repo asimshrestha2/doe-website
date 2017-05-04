@@ -1,0 +1,102 @@
+Group 6:
+
+Improved Unit Tests:
+
+TestdbConnection
+	Connection created
+	Connect connection(Host = “ ”, Username = “ ”, etc.)
+	If(connection = established)
+		Print(“DB is connected”)
+	Else
+		Print(“DB is not connected”)
+
+
+TestEvent
+	Create Event(name,date,time,…)
+	Insert event into DB
+	Retrieve event from DB
+	Compare DB Data against Input Data
+		InputName == Event.Name
+		InputDate == Event.Date
+		…
+		If(All DB Data == AllInputData)
+			Print(“This event has been verified”)
+		Else
+			Print(“There has been an error in verifying this event”)
+
+
+TestFacility
+	Create Facility(FacilityName, FacID,SchoolID,…)
+	Insert Facility into DB
+	Retrieve Facility from DB
+	Compare DB Data against Input Data
+		InputFacilityName == Facility.Name
+		InputFacID == Facility.FacID
+		…
+		If(All DB Data == AllInputData)
+			Print(“This facility has been verified”)
+		Else
+			Print(“There has been an error in verifying this faciity ”)
+
+
+
+
+
+TestBanUser
+	Select User to Ban
+	Edit User_Type from “_____” to “Banned”
+	Compare DB Data with expected user type
+		If(User.User_Type == “Banned”)
+			Print(“The User has been properly banned”)
+		Else
+			Print(“There has been an error in banning the user”)
+	Attempt/Simulate login process to verify they can no longer log in
+		
+
+
+TestFacility
+	Create School(SchoolName, SchoolID,…)
+	Insert Facility into DB
+	Retrieve Facility from DB
+	Compare DB Data against Input Data
+		InputFacilityName == Facility.Name
+		SchoolID == School.ID
+		…
+		If(All DB Data == AllInputData)
+			Print(“This school has been verified”)
+		Else
+			Print(“There has been an error in verifying this school”)
+
+
+
+Test User
+	Create User(UserName,UserID,Address,…)
+	Insert User into DB
+	Retrieve User from DB
+	Compare DB Against Input Data
+		InputUserName == User.Name
+		InputEmail == User.Email
+		InputAddress == User.Address
+		…
+		If(All DB Data == AllInputData)
+			Print(“This User has been verified”)
+		Else
+			Print(“There has been an error in verifying this User”)
+
+
+
+
+
+
+TestSocialMedia
+	Initiate Social Media/Facebook API
+	Enter String to post on Social Media
+	Submit/Post to Social Media
+	Verify that the correct information was posted to the right profile/account
+
+TestPayment
+	Initiate Stripe API
+	Enter user info (plus secret testing key) to form
+	Submit Payment through API
+	Verify in records that the payment has been properly directed and recorded
+
