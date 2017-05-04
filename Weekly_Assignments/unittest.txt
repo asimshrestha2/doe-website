@@ -36,7 +36,7 @@ TestFacility
 		If(All DB Data == AllInputData)
 			Print(“This facility has been verified”)
 		Else
-			Print(“There has been an error in verifying this faciity ”)
+			Print(“There has been an error in verifying this faciity ”) 
 
 
 
