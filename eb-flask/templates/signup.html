@@ -88,23 +88,24 @@
     //Check regex
     if((document.getElementById('email').value.match(emailpattern) &&
         (document.getElementById('phone').value.match(phonenopattern)) &&
-          (document.getElementById('password').value.match(pwdpattern)) &&
-            (document.getElementById('zip').value.match(zippattern)) &&
-            //check fields are not blank
-            !(document.getElementById('email').value.match("")) &&
-              !(document.getElementById('phone').value.match("")) &&
-                !(document.getElementById('password').value.match("")) &&
-                  !(document.getElementById('address').value.match("")) &&
-                    !(document.getElementById('username').value.match("")) &&
-                      !(document.getElementById('confpassword').value.match("")) &&
-                        !(document.getElementById('firstname').value.match("")) &&
-                          !(document.getElementById('lastname').value.match("")) &&
-                            !(document.getElementById('zip').value.match("")) &&
-                    (document.getElementById('password').value == document.getElementById('confpassword').value)){
-                    everythingChecked = true;
-                  }
+        (document.getElementById('password').value.match(pwdpattern)) &&
+        (document.getElementById('zip').value.match(zippattern)) &&
+        //check fields are not blank
+        !(document.getElementById('email').value == "") &&
+        !(document.getElementById('phone').value == "") &&
+        !(document.getElementById('password').value == "") &&
+        !(document.getElementById('address').value == "") &&
+        !(document.getElementById('username').value == "") &&
+        !(document.getElementById('confpassword').value == "") &&
+        !(document.getElementById('firstname').value == "") &&
+        !(document.getElementById('lastname').value == "") &&
+        !(document.getElementById('zip').value == "") &&
+        (document.getElementById('password').value == document.getElementById('confpassword').value))){
+          everythingChecked = true;
+        }
 
     if(everythingChecked){
+      log.innerHTML = "";
       var request = new XMLHttpRequest();
       request.open('POST', '/signup', true);
       request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
@@ -113,14 +114,22 @@
           var data = request.responseText;
           //console.log(data);
           if (data == '-1') {
-            log.innerText = "Invalid Password or Username.";
+            log.innerText = "Username is taken.";
           } else {
             window.location = data;
           }
         }
       }
       request.send("username="+ document.getElementById('username').value +
-                    "&password=" + document.getElementById('password').value );
+                  "&password=" + document.getElementById('password').value +
+                  "&email=" + document.getElementById('email').value +
+                  "&phone=" + document.getElementById('phone').value +
+                  "&firstname=" + document.getElementById('firstname').value +
+                  "&lastname=" + document.getElementById('lastname').value +
+                  "&zip=" + document.getElementById('zip').value +
+                  "&address=" + document.getElementById('address').value );
+    } else {
+      log.innerText = "Please Make Sure all your fields are entered correctly! :P";
     }
   }
 

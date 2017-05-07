@@ -4,6 +4,7 @@ import sys
 import MySQLdb
 from werkzeug.utils import secure_filename
 import dbconnection
+import calendarf
 
 # EB looks for an 'application' callable by default.
 application = Flask(__name__)
@@ -57,16 +58,18 @@ def login():
         username = checkInput(request.form['username'])
         password = checkInput(request.form['password'])
         #execute query to see if valid username password combo
-        print(db.loginQuery.format(username,password), file=sys.stderr)
+        print(db.loginQuery.format(username,password))
         row1 = db.executeQuery(db.loginQuery.format(username, password))
         #if sucessful will continue on, else will throw error inside executeQuery
         #just some debug stuff for now
-        if row1 is not None:
-            print('%s' % str(row1[0][1]), file=sys.stderr)
+        if row1:
+            print('%s' % str(row1[0][1]))
             #create some session variables with data that will be used frequently
             session['Username'] = row1[6]
             session['UserType'] = row1[5]
-            return redirect(url_for('hello'))
+            return url_for('hello')
+        else:
+            return "-1"
     return render_template('login.html')
 
 #TODO: Change logout return
@@ -81,30 +84,27 @@ def logout():
 def signup():
     if request.method == 'POST':
         #parse in the form data, make sure strings aren't SQL injection
-        name = checkInput(request.form['firstname'] + request.form['lastname'])
+        name = checkInput(request.form['firstname'] + " " + request.form['lastname'])
         email = checkInput(request.form['email'])
         phone_num = checkInput(request.form['phone'])
         uzip = checkInput(request.form['zip'])
-        user_type = 'User'
+        user_type = 'Public'
         username = checkInput(request.form['username'])
         password = checkInput(request.form['password'])
         user_address = checkInput(request.form['address'])
         #execute query to see if valid username password combo
-        row1 = dbconnection.executeQuery("""
-            INSERT INTO user(name, email, phone_num, zip, user_type, username, password, user_address)
-            VALUES('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}')
-            """.format(name, email, phone_num, uzip, user_type, username, password, user_address))[0]
+        row1 = db.executeQuery("""insert into Dummy(x) values(%s)""", (12, ))
 
         #create some session variables with data that will be used frequently
-        if not row1:
+        if row1:
             # Returns if no user
             return "-1"
         else:
             #if sucessful will continue on, else will throw error inside executeQuery
             #just some debug stuff for now
-            print('%s' % row1[1]) #, file=sys.stderr
+            #, file=sys.stderr
             session['username'] = username
-            session['userType'] = 'User'
+            session['userType'] = 'Public'
             return url_for('hello')
     else:
         return render_template('signup.html')
@@ -116,16 +116,8 @@ application.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 @application.route('/calendar', methods=['GET', 'POST'])
 def calendar():
     if request.method == 'POST':
-        print(request.form['date'])
-        res = [{'date':'8/4/2016', 'events':[{'title': "Event No. 1", 'discription': "This is something"},
-            {'title': "Event No. 2", 'discription': "This is something"},
-            {'title': "Event No. 3", 'discription': "This is something"}]},
-            {'date':'9/4/2016', 'events':[{'title': "Event No. 1", 'discription': "This is something"},
-            {'title': "Event No. 2", 'discription': "This is something"},
-            {'title': "Event No. 3", 'discription': "This is something"}]},
-            {'date':'10/4/2016', 'events':[]},
-            {'date':'11/4/2016', 'events':[{'title': "Event No. 1", 'discription': "This is something"},
-            {'title': "Event No. 2", 'discription': "This is something"}]}]
+        res = calendarf.getweekevents()
+        print(res)
         response = application.response_class(
             response=json.dumps(res),
             status=200,
@@ -162,8 +154,8 @@ def checkInput(stringInput):
     return stringInput
     #remove slashes
     #stringInput.decode('string_ecape')
-    
-    
+
+
 # TODO: Need database class that handles all the database commands and connection
 # TODO: Need a social media api handling class
 # TODO: Handle the Money API
