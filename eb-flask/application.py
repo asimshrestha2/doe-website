@@ -15,7 +15,6 @@ db = dbconnection.DBManager()
 
 @application.route('/')
 def hello():
-    session.clear()
     return render_template('index.html')
 
 @application.route('/u/')
@@ -71,25 +70,30 @@ def login():
         username = checkInput(request.form['username'])
         password = checkInput(request.form['password'])
         #execute query to see if valid username password combo
-        result = db.executeQuery(db.loginQuery.format(username, password))[0]
+        result = db.executeQuery(db.loginQuery.format(username, password))
         #if sucessful will continue on, else will throw error inside executeQuery
         #just some debug stuff for now
         if result is not None:
             #create some session variables with data that will be used frequently
+            result = result[0]
             eQRes = db.executeQuery(db.eventAttendingQuery.format(result[0]))
             #lets populate our user class with the event information
             events = []
-            for event in eQRes:
-                #gets result of location query which returns school address and facility name
-                locationQueryRes = db.executeQuery(db.locQuery.format(event[2],event[3]))[0]
-                #create actual location string to be displayed
-                location = locationQueryRes[0] + "in facility: " + locationQueryRes[1]
-                events.append(Event(event[1], event[11], "http://static.zerochan.net/Stardust.Dragon.full.1878025.jpg", db.executeQuery(db.locQuery.format(event[3]))[0][0], event[4]))
+            if eQRes is not None: #if we don't have any we don't have to do this
+                for event in eQRes:
+                    #gets result of location query which returns school address and facility name
+                    locationQueryRes = db.executeQuery(db.locQuery.format(event[2],event[3]))
+                    if locationQueryRes is not None:
+                        locationQueryRes = locationQueryRes[0]
+                        #create actual location string to be displayed
+                        location = locationQueryRes[0] + "in facility: " + locationQueryRes[1]
+                        events.append(Event(event[1], event[11], "http://static.zerochan.net/Stardust.Dragon.full.1878025.jpg", db.executeQuery(db.locQuery.format(event[3]))[0][0], event[4]))          
             userInfo = User(result[1], result[5], 0, 'https://images3.alphacoders.com/761/thumb-350-761779.jpg', events)
             #we can't save classes in sessions, but we can turn them into dictionaries
             session['userInfo'] = userInfo.serialize()
-            print(session['userInfo']['events'][0]['name'], file=sys.stderr)
             return url_for('user', name = username)
+        #else we have wrong password
+        return url_for('login')
     else:
         return render_template('login.html')
 
@@ -114,8 +118,7 @@ def signup():
         password = checkInput(request.form['password'])
         user_address = checkInput(request.form['address'])
         #execute query to see if valid username password combo
-        row1 = db.executeQuery("""insert into Dummy(x) values(%s)""", (12, ))
-
+        row1 = db.executeQuery(db.registerQuery.format(name,email,phone_num,uzip,user_type,username,password,user_address,0))
         #create some session variables with data that will be used frequently
         if row1:
             # Returns if no user
