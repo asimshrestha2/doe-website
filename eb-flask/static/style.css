@@ -376,7 +376,7 @@ header.sub-page{
   padding: 20px;
 }
 
-.event .discription{
+.event .description{
   padding: 10px 20px 20px 20px;
 }
 
@@ -545,7 +545,7 @@ header.sub-page{
   background: linear-gradient(0deg, rgba(0,0,0,.4), rgba(0,0,0,0));
 }
 
-.card .discription{
+.card .description{
   padding: 10px;
   white-space: normal;
   font-size: 14px;

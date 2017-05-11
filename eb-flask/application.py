@@ -37,15 +37,15 @@ def user(name=None):
             {'title': "Apple", 'rating': 5},
             {'title': "Potato", 'rating': 8}],
         'pictureUrl': 'https://asimshrestha2.github.io/portfoliov2/imgs/Asim_Ymir.png',
-        'events': [{'name': "Dance", 'description': "This is a discription for the dance event that is going on",
+        'events': [{'name': "Dance", 'description': "This is a description for the dance event that is going on",
             'pictureUrl': 'http://orig13.deviantart.net/ac10/f/2015/100/c/4/render_4_edited_by_asimshrestha2-d8p8rbi.png'},
-            {'name': "Dance No. 2", 'description': "This is a discription for the dance event 2 that is going on",
+            {'name': "Dance No. 2", 'description': "This is a description for the dance event 2 that is going on",
             'pictureUrl': 'http://orig13.deviantart.net/ac10/f/2015/100/c/4/render_4_edited_by_asimshrestha2-d8p8rbi.png'},
-            {'name': "Dance No. 3", 'description': "This is a discription for the dance event 3 that is going on",
+            {'name': "Dance No. 3", 'description': "This is a description for the dance event 3 that is going on",
             'pictureUrl': 'http://orig13.deviantart.net/ac10/f/2015/100/c/4/render_4_edited_by_asimshrestha2-d8p8rbi.png'}]
         }
     return render_template('profile.html', user = user)
- 
+
 
 @application.route('/e/')
 @application.route('/e/<name>')
@@ -57,7 +57,7 @@ def event(name=None):
             'name': name,
             'location': "Towson University, Towson, MD",
             'host': "Asim Shrestha",
-            'discription': "This is the description from Python",
+            'description': "This is the description from Python",
             'pictureUrl': 'https://asimshrestha2.github.io/imgs/content/environment.png'
         }
         return render_template('eventpage.html', event=event)
@@ -87,13 +87,13 @@ def login():
                         locationQueryRes = locationQueryRes[0]
                         #create actual location string to be displayed
                         location = locationQueryRes[0] + "in facility: " + locationQueryRes[1]
-                        events.append(Event(event[1], event[11], "http://static.zerochan.net/Stardust.Dragon.full.1878025.jpg", db.executeQuery(db.locQuery.format(event[3]))[0][0], event[4]))          
+                        events.append(Event(event[1], event[11], "http://static.zerochan.net/Stardust.Dragon.full.1878025.jpg", db.executeQuery(db.locQuery.format(event[3]))[0][0], event[4]))
             userInfo = User(result[1], result[5], 0, 'https://images3.alphacoders.com/761/thumb-350-761779.jpg', events)
             #we can't save classes in sessions, but we can turn them into dictionaries
             session['userInfo'] = userInfo.serialize()
             return url_for('user', name = username)
         #else we have wrong password
-        return url_for('login')
+        return "-1"
     else:
         return render_template('login.html')
 
@@ -179,16 +179,11 @@ def checkInput(stringInput):
     #remove slashes
     #stringInput.decode('string_ecape')
 
-
-# TODO: Need database class that handles all the database commands and connection
-# TODO: Need a social media api handling class
 # TODO: Handle the Money API
-def checkInput(arg):
-    return arg
+
 # run the app.
 if __name__ == "__main__":
     # Setting debug to True enables debug output. This line should be
     # removed before deploying a production app.
     application.debug = True
-    app.config['SERVER_NAME'] = 'localhost'
     application.run()
