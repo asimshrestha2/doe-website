@@ -20,10 +20,36 @@
       <div class = "title">Create Event</div>
       <div class="input-field">
         <input type="text" name="eventname" id="eventname" value="">
-        <label for="eventname">Event Name</label>
+        <label for="eventname">Event Title</label>
       </div>
       <div class="text-box">
         <textarea id="eventdescription" placeholder="Description"></textarea>
+      </div>
+      <div class="date-selector">
+        Event Date:
+        Month<input type="number" name="month" min="1" max="12">
+        Day<input type="number" name="quantity" min="1" max="31">
+        Year<input type="number" name="quantity" min="2017" max="2019">
+      </div>
+      <div class = "time-selector">
+        Event Time:
+        Hour:<input type ="number" name="hour" min="1" max="24">
+        Minute:<input type="number" name="minute" min="0" max="60">
+      </div>
+      <div class="school-selector">
+        Select School:
+        <select disabled>
+          <option></option>
+        </select>
+      </div>
+      <div class="facility-selector">
+        Select Facility:
+        <select disabled>
+          <option></option>
+        </select>
+      </div>
+      <div class="donation-checkbox">
+        <input type="checkbox" name= "donation-checkbox" value="takes-donations">Takes donations?
       </div>
       <div>
         <input type="radio" name="event-type" value="private">Private</input>
