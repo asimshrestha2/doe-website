@@ -129,13 +129,24 @@ a:hover{
   padding: 10px 15px;
   margin-left: 10px;
   border-radius: 100px;
+  height: 24px;
   color: #FFFFFF;
   transition: all 275ms linear;
+}
+
+.btn img{
+  width: 24px;
+  height: 24px;
 }
 
 .btn:hover{
   color: #000000;
   background: #FFFFFF;
+}
+
+.btn:hover img{
+  -webkit-filter: invert(1);
+  filter: invert(1);
 }
 
 .btn-fill{

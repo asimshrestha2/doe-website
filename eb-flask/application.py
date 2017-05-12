@@ -2,6 +2,7 @@ from flask import Flask, session, render_template, redirect, url_for, escape, re
 import os
 import sys
 import MySQLdb
+import datetime
 from werkzeug.utils import secure_filename
 import dbconnection
 import calendarf
@@ -91,6 +92,7 @@ def login():
             userInfo = User(result[1], result[5], 0, 'https://images3.alphacoders.com/761/thumb-350-761779.jpg', events)
             #we can't save classes in sessions, but we can turn them into dictionaries
             session['userInfo'] = userInfo.serialize()
+            session['username'] = username
             return url_for('user', name = username)
         #else we have wrong password
         return "-1"
@@ -151,10 +153,64 @@ def calendar():
     else:
         return render_template('calendar.html')
 
+#Search Page
+@application.route('/search')
+def search():
+    return(render_template('search.html'))
+
 #TODO: Add more to create event
 @application.route('/createevent')
 def createevent():
     return(render_template('createevent.html'))
+
+@application.route('/getschools', methods=["POST"])
+def getschools():
+    cols = ["school_id", "school_name", "school_address"]
+    colStr = ""
+    for i in range(len(cols)):
+        if(i != len(cols) - 1):
+            colStr += cols[i] + ', '
+        else:
+            colStr += cols[i]
+    query = "select " + colStr + " from school;"
+    schools = db.executeQuery(query)
+    res = []
+    for school in schools:
+        sc = {}
+        for i in range(len(school)):
+            sc[cols[i]]=school[i]
+        res.append(sc)
+    response = application.response_class(
+        response=json.dumps(res),
+        status=200,
+        mimetype='application/json'
+    )
+    return response
+
+@application.route('/getfacilitiesforschool', methods=["POST"])
+def getfacilitiesforschool():
+    school_id = request.form['school_id']
+    cols = ["facility_id", "facility_name", "capacity", "time_open", "time_close", "facility_rent"]
+    colStr = ""
+    for i in range(len(cols)):
+        if(i != len(cols) - 1):
+            colStr += cols[i] + ', '
+        else:
+            colStr += cols[i]
+    query = "select " + colStr + " from facility where school_id="+school_id+";"
+    facilities = db.executeQuery(query)
+    res = []
+    for facility in facilities:
+        res.append({cols[0]:facility[0], cols[1]:facility[1], cols[2]:facility[2], cols[3]: str(facility[3]),
+        cols[4]: str(facility[4]), cols[5]: float(facility[5])})
+
+    print(res)
+    response = application.response_class(
+        response=json.dumps(res),
+        status=200,
+        mimetype='application/json'
+    )
+    return response
 
 @application.errorhandler(404)
 def page_not_found(error):

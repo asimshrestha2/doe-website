@@ -38,13 +38,13 @@
       </div>
       <div class="school-selector">
         Select School:
-        <select disabled>
+        <select id="school" disabled>
           <option></option>
         </select>
       </div>
       <div class="facility-selector">
         Select Facility:
-        <select disabled>
+        <select id="facility" disabled>
           <option></option>
         </select>
       </div>
@@ -62,4 +62,50 @@
       </div>
     </div>
   </div>
+  <script>
+  var school = document.getElementById('school');
+  getSchools();
+
+  school.addEventListener("change", function() {
+    if(this.value != null || this.value != ""){
+      getfacilitiesforschool(this.value)
+    }
+  })
+
+  function getSchools() {
+    var request = new XMLHttpRequest();
+    request.open('POST', '/getschools', true);
+    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+    request.onreadystatechange = function(e) {
+      if(request.readyState == XMLHttpRequest.DONE && request.status == 200) {
+        var data = JSON.parse(request.responseText);
+        school.disabled=false;
+        console.log(data);
+        for (var i = 0; i < data.length; i++) {
+          school.innerHTML += "<option value='"+ data[i].school_id +"'>"+ data[i].school_name +" - "+ data[i].school_address+"</option>";
+        }
+      }
+    }
+    request.send("");
+  }
+
+  function getfacilitiesforschool(school_id) {
+    var request = new XMLHttpRequest();
+    request.open('POST', '/getfacilitiesforschool', true);
+    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+    request.onreadystatechange = function(e) {
+      if(request.readyState == XMLHttpRequest.DONE && request.status == 200) {
+        var data = JSON.parse(request.responseText);
+        var facility = document.getElementById('facility');
+        facility.disabled=false;
+        for (var i = 0; i < data.length; i++) {
+          facility.innerHTML += "<option value='"+ data[i].facility_id +"'>"+ data[i].facility_name +" - "+ data[i].capacity
+          + "- $" + data[i].facility_rent +"</option>";
+        }
+      }
+    }
+    request.send("school_id="+school_id);
+  }
+
+  </script>
 {% endblock %}

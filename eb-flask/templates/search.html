@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% block title %}Login - DOE{% endblock %}
+{% block head %}
+    {{ super() }}
+    <meta name="theme-color" content="#dcb0a5">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,  maximum-scale=1.0, user-scalable=no">
+    <meta property="og:title" content="Login - DOE">
+    <meta property="og:type" content="profile">
+    <meta property="og:url" content="{{ url_for('login') }}">
+    <meta property="og:image" content="https://asimshrestha2.github.io/portfoliov2/imgs/Asim_Ymir.png">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@Asim_Shresth">
+    <meta name="twitter:title" content="Login - DOE">
+    <meta name="twitter:description" content="Login - DOE">
+    <meta name="twitter:image" content="https://asimshrestha2.github.io/portfoliov2/imgs/Asim_Ymir.png">
+{% endblock %}
+{% block content %}
+  <div class="search-page row-big">
+    <div class="row-small">
+      <div class="input-field">
+        <input type="text" name="search" id="search-p" value="">
+        <label for="search-p">Search</label>
+      </div>
+      <div id="btn-search" class="btn-small">Search</div>
+    </div>
+  </div>
+{% endblock %}

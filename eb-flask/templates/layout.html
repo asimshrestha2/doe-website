@@ -28,11 +28,11 @@
         </div>
         <nav>
           <ul class="top-buttons">
+            <li><div class="btn" id="calendar"><a href ="{{ url_for('calendar') }}">
+              <img src="{{ url_for('static', filename='calendaricon.png') }}" alt="CalendarIcon">
+            </a></div></li>
             {% if session['username'] %}
               <li><div id="menu"><div class="btn" id="menubtn">Menu</div>
-                <a href ="{{ url_for('calendar') }}">
-                  <img src="{{ url_for('static', filename='calendaricon.png') }}" alt="Calendaricon">
-                </a>
                   <div class="menu-content" id="menu-content">
                     <a href="{{ url_for('user', name = session['username']) }}">{{ session['username'] }}</a>
                     <a href="{{ url_for('logout') }}">Logout</a>
@@ -41,9 +41,6 @@
               </li>
             </ul>
             {% else %}
-            <a href ="{{ url_for('calendar') }}">
-              <img src="{{ url_for('static', filename='calendaricon.png') }}" alt="Calendaricon">
-            </a>
               <li><div class="btn">Login<a href="{{ url_for('login') }}"><div class="btn-fill"></div></a></div></li>
               <li><div class="btn">Sign Up<a href="{{ url_for('signup') }}"><div class="btn-fill"></div></a></div></li>
             </ul>
