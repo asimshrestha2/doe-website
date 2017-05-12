@@ -12,7 +12,7 @@ class DBManager:
 
     #Query for registering
     registerQuery = r"""INSERT INTO user (name, email, phone_num, zip, user_type, username, password, user_address, user_rating)
-                        VALUES('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', {});"""
+                        VALUES('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', {});"""
     
     #---in progress---
     #Query for getting names of some events perhaps to populate a list with a set amount of events
