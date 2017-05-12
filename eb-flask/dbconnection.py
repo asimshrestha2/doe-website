@@ -11,7 +11,8 @@ class DBManager:
     locQuery = r"""select school_address, facility_name from school, facility where school.school_id = facility.school_id and school.school_id = 1 and facility_id = 2""" 
 
     #Query for registering
-    registerQuery = "INSERT INTO user (user_id, name, email, phone_num, zip, user_type, username, password, user_address) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+    registerQuery = r"""INSERT INTO user (name, email, phone_num, zip, user_type, username, password, user_address, user_rating)
+                        VALUES('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', {});"""
     
     #---in progress---
     #Query for getting names of some events perhaps to populate a list with a set amount of events
@@ -26,6 +27,7 @@ class DBManager:
         if query:
             c=db.cursor() #db cursor used to iterate over records
             c.execute("""{}""".format(query))
+            db.commit()
             if(c.rowcount > 0): #if we have something to return inside our table
                 return c.fetchall() #return all the rows in some array
         else:
