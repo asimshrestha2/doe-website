@@ -457,6 +457,7 @@ header.sub-page{
 /* Profile */
 
 .profile-header{
+  position: relative;
   height: 100px;
 }
 
@@ -482,6 +483,12 @@ header.sub-page{
 
 .profile-info .text .title{
   font-size: 14px;
+}
+
+.profile-right{
+  position: absolute;
+  right: 0;
+  top: 0;
 }
 
 .text-box textarea{

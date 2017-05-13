@@ -29,7 +29,9 @@
     <div class="top-nav">
       <div class="row-big">
         <div class="title">
-          <a href="{{ url_for('hello') }}">DOE (Should be a picture)</a>
+          <a href="{{ url_for('hello') }}">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo">
+          </a>
         </div>
       </div>
     </div>

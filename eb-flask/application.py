@@ -1,4 +1,4 @@
-from flask import Flask, session, render_template, redirect, url_for, escape, request, json
+from flask import Flask, session, render_template, redirect, url_for, escape, request, json, abort
 import os
 import sys
 import MySQLdb
@@ -45,7 +45,7 @@ def user(name=None):
             {'name': "Dance No. 3", 'description': "This is a description for the dance event 3 that is going on",
             'pictureUrl': 'http://orig13.deviantart.net/ac10/f/2015/100/c/4/render_4_edited_by_asimshrestha2-d8p8rbi.png'}]
         }
-    return render_template('profile.html', user = user)
+    return render_template('profile.html', user = user, name=name)
 
 
 @application.route('/e/')
@@ -93,6 +93,7 @@ def login():
             #we can't save classes in sessions, but we can turn them into dictionaries
             session['userInfo'] = userInfo.serialize()
             session['username'] = username
+            session['userType'] = result[5]
             return url_for('user', name = username)
         #else we have wrong password
         return "-1"
@@ -105,6 +106,7 @@ def logout():
     # remove the username from the session if it's there
     session.pop('username', None)
     session.pop('userType', None)
+    session.pop('userInfo', None)
     return redirect(url_for('hello'))
 
 @application.route('/signup', methods=['GET', 'POST'])
@@ -159,9 +161,15 @@ def search():
     return(render_template('search.html'))
 
 #TODO: Add more to create event
-@application.route('/createevent')
+@application.route('/createevent', methods=['GET', 'POST'])
 def createevent():
-    return(render_template('createevent.html'))
+    if request.method == 'POST':
+        return "1"
+    else:
+        if session.get('userType') != None:
+            return render_template('createevent.html')
+        else:
+            abort(404)
 
 @application.route('/getschools', methods=["POST"])
 def getschools():
@@ -203,8 +211,6 @@ def getfacilitiesforschool():
     for facility in facilities:
         res.append({cols[0]:facility[0], cols[1]:facility[1], cols[2]:facility[2], cols[3]: str(facility[3]),
         cols[4]: str(facility[4]), cols[5]: float(facility[5])})
-
-    print(res)
     response = application.response_class(
         response=json.dumps(res),
         status=200,

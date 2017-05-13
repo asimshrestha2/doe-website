@@ -16,62 +16,84 @@
 {% endblock %}
 {% block content %}
   {% if user.name %}
-  <div class="profile-header row-big">
-    <div class="profile-info">
-      <div class="profile-pic">
-        <img src="{{ user.pictureUrl }}">
+    <div class="profile-header row-big">
+      <div class="profile-info">
+        <div class="profile-pic">
+          <img src="{{ user.pictureUrl }}">
+        </div>
+        <div class="text">
+          <div class="username">{{ user.name }}</div>
+          <div class="title">{{ user.title }}</div>
+        </div>
       </div>
-      <div class="text">
-        <div class="username">{{ user.name }}</div>
-        <div class="title">{{ user.title }}</div>
+      <div class="profile-right">
+        {% if session['username'] == name %}
+        <div class="rect-btn">
+          Create Event
+          <a href="{{ url_for('createevent') }}"><div class="btn-fill"></div></a>
+        </div>
+        {% endif %}
       </div>
     </div>
-  </div>
-  <div class="profile-stats row-big">
-    <div class="stat">
-      <div class="title">
-        Ratings
-      </div>
-      {% for rating in user.rating %}
-      <div class="rating">
-        <div class="name">
-          {{ rating.title }}
+    {% if session['userType'] == 'Public' %}
+    <div class="profile-stats row-big">
+      <div class="stat">
+        <div class="title">
+          Ratings
         </div>
-        <div class="progressbar">
-          <div class="bar" style="width: {{ (rating.rating*10) }}%"></div>
-        </div>
-      </div>
-      {% endfor %}
-    </div>
-    <div class="stat">
-      <div class="title">
-        Ratings
-      </div>
-      <div class="rating">
-        <div class="name">
-          Something
-        </div>
-        <div class="progressbar">
-          <div class="bar" style="width: 50%"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="profile-events">
-    <div class="p-event">
-      <div class="list-card row-big"><!--
-        {% for event in user.events %}
-      --><div class="card">
-          <div class="image" style="background: url('{{ event.pictureUrl }}'); background-size: cover">
-            <div class="title">{{ event.title }}</div>
+        {% for rating in user.rating %}
+        <div class="rating">
+          <div class="name">
+            {{ rating.title }}
           </div>
-          <div class="description">{{ event.description }}</div>
-          <a href="{{ url_for('event', name=event.title) }}"><div class="btn-fill"></div></a>
-        </div><!--
+          <div class="progressbar">
+            <div class="bar" style="width: {{ (rating.rating*10) }}%"></div>
+          </div>
+        </div>
         {% endfor %}
-        --></div>
+      </div>
+      <div class="stat">
+        <div class="title">
+          Ratings
+        </div>
+        <div class="rating">
+          <div class="name">
+            Something
+          </div>
+          <div class="progressbar">
+            <div class="bar" style="width: 50%"></div>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
+    <div class="profile-events">
+      <div class="p-event">
+        <div class="list-card row-big"><!--
+          {% for event in user.events %}
+        --><div class="card">
+            <div class="image" style="background: url('{{ event.pictureUrl }}'); background-size: cover">
+              <div class="title">{{ event.title }}</div>
+            </div>
+            <div class="description">{{ event.description }}</div>
+            <a href="{{ url_for('event', name=event.title) }}"><div class="btn-fill"></div></a>
+          </div><!--
+          {% endfor %}
+          --></div>
+      </div>
+    </div>
+    {% elif session['userType'] == 'Admin' %}
+    <div class="admin-panel row-big">
+      This is the Admin Panel
+    </div>
+    {% elif session['userType'] == 'School' %}
+    <div class="school-panel row-big">
+      This is the School Panel
+    </div>
+    {% else %}
+    <div class="error row-big text-center">
+      Missing User Type
+    </div>
+    {% endif %}
   {% else %}
     <div class="username text-center">Username missing.</div>
   {% endif %}

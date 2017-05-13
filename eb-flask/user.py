@@ -4,7 +4,7 @@ from event import Event
 #class for regular users
 class User:
     name = ""
-    title = "User"
+    title = "Public"
     rating = 0
     pictureUrl = ""
     events = []
@@ -20,7 +20,7 @@ class User:
             'pictureUrl':self.pictureUrl,
             'events': serializedEvents,
         }
-    
+
     def __init__ (self, name, title, rating, pictureUrl, events):
         self.name = name
         self.title = title

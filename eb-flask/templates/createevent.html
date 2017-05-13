@@ -26,15 +26,15 @@
         <textarea id="eventdescription" placeholder="Description"></textarea>
       </div>
       <div class="date-selector">
-        Event Date:
-        Month<input type="number" name="month" min="1" max="12">
-        Day<input type="number" name="quantity" min="1" max="31">
-        Year<input type="number" name="quantity" min="2017" max="2019">
+        Event Date: <br>
+        Month <input type="number" id="month" min="1" max="12">
+        Day <input type="number" id="day" min="1" max="31">
+        Year <input type="number" id="year" min="2017" max="2019">
       </div>
       <div class = "time-selector">
-        Event Time:
-        Hour:<input type ="number" name="hour" min="1" max="24">
-        Minute:<input type="number" name="minute" min="0" max="60">
+        Event Time: <br>
+        Hour: <input type ="number" id="hour" min="1" max="24">
+        Minute: <input type="number" id="minute" min="0" max="60">
       </div>
       <div class="school-selector">
         Select School:
@@ -49,14 +49,14 @@
         </select>
       </div>
       <div class="donation-checkbox">
-        <input type="checkbox" name= "donation-checkbox" value="takes-donations">Takes donations?
+        <input type="checkbox" id="donation-checkbox" value="takes-donations">Takes donations?
       </div>
       <div>
         <input type="radio" name="event-type" value="private">Private</input>
         <input type="radio" name="event-type" value="public">Public</input>
       </div>
       <div class="text-center">
-        <div class="rect-btn">
+        <div class="rect-btn" id="create-btn">
           Create Event
         </div>
       </div>
@@ -64,6 +64,7 @@
   </div>
   <script>
   var school = document.getElementById('school');
+  var facility = document.getElementById('facility');
   getSchools();
 
   school.addEventListener("change", function() {
@@ -80,7 +81,7 @@
       if(request.readyState == XMLHttpRequest.DONE && request.status == 200) {
         var data = JSON.parse(request.responseText);
         school.disabled=false;
-        console.log(data);
+        school.innerHTML = "<option></option>";
         for (var i = 0; i < data.length; i++) {
           school.innerHTML += "<option value='"+ data[i].school_id +"'>"+ data[i].school_name +" - "+ data[i].school_address+"</option>";
         }
@@ -91,21 +92,41 @@
 
   function getfacilitiesforschool(school_id) {
     var request = new XMLHttpRequest();
-    request.open('POST', '/getfacilitiesforschool', true);
+    request.open('POST', '/createevent', true);
     request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
     request.onreadystatechange = function(e) {
       if(request.readyState == XMLHttpRequest.DONE && request.status == 200) {
         var data = JSON.parse(request.responseText);
-        var facility = document.getElementById('facility');
         facility.disabled=false;
+        facility.innerHTML = "<option></option>";
         for (var i = 0; i < data.length; i++) {
           facility.innerHTML += "<option value='"+ data[i].facility_id +"'>"+ data[i].facility_name +" - "+ data[i].capacity
           + "- $" + data[i].facility_rent +"</option>";
         }
       }
     }
-    request.send("school_id="+school_id);
+    request.send("school_id=" + school_id);
   }
 
+  function createEvent() {
+    var request = new XMLHttpRequest();
+    request.open('POST', '/getfacilitiesforschool', true);
+    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+    request.onreadystatechange = function(e) {
+      if(request.readyState == XMLHttpRequest.DONE && request.status == 200) {
+        var data = request.responseText;
+        console.log(data);
+      }
+    }
+    request.send("school_id="+ school.value + "&facility_id=" + facility.value
+                + "&description=" + document.getElementById('eventdescription').value
+                + "&eventname=" + document.getElementById('eventname').value
+                + "&month=" + document.getElementById('month').value
+                + "&day=" + document.getElementById('day').value
+                + "&year=" + document.getElementById('year').value
+                + "&hour=" + document.getElementById('hour').value
+                + "&minute=" + document.getElementById('minute').value
+                + "&donation=" + document.getElementById('takes-donations').checked);
+  }
   </script>
 {% endblock %}
