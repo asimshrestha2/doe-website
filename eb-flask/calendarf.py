@@ -26,7 +26,7 @@ def getweekevents():
         if rlt:
             rlt = list(rlt)
             for row in rlt:
-                events.append({'title':row[1],'discription':row[11]})
+                events.append({'id': row[0], 'title':row[1],'description':row[11]})
             wevents.append({'date':date, 'events':events})
     return wevents
 

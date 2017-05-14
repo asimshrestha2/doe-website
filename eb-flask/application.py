@@ -6,6 +6,7 @@ import datetime
 from werkzeug.utils import secure_filename
 import dbconnection
 import calendarf
+import urllib.parse as urllib
 from user import User
 from event import Event
 
@@ -49,19 +50,37 @@ def user(name=None):
 
 
 @application.route('/e/')
-@application.route('/e/<name>')
-def event(name=None):
-    if name == None:
-        return redirect(url_for('hello'))
+@application.route('/e/<int:id>/<name>', methods=['GET', 'DELETE'])
+def event(id=None, name=None):
+    if request.method == 'DELETE':
+        query = "select host_id from event where event_id =" + str(id) + " and event_name='"+ name +"';"
+        result = db.executeQuery(query)
+        if result:
+            host_id = result[0][0]
+            db.executeQuery("delete from event where event_id="+ str(id) + " and event_name='"+ name + "' and host_id="+ str(host_id) +";")
+            return '1'
+        else:
+            return '-1'
     else:
-        event = {
-            'name': name,
-            'location': "Towson University, Towson, MD",
-            'host': "Asim Shrestha",
-            'description': "This is the description from Python",
-            'pictureUrl': 'https://asimshrestha2.github.io/imgs/content/environment.png'
-        }
-        return render_template('eventpage.html', event=event)
+        if name == None and id == None :
+            return redirect(url_for('hello'))
+        else:
+            event = {}
+            query = "select * from event where event_id = " + str(id) + " and event_name='"+ name +"'"
+            result = db.executeQuery(query)
+            if result:
+                result = result[0]
+                hostres = db.executeQuery("select username from user where user_id=" + str(result[4]) + ";")
+                host = "User Not Found" if hostres is None else hostres[0][0]
+                schoolres = db.executeQuery("select school_id, school_name, school_address from school where school_id=" + str(result[3]) + ";")
+                school = {'school_name':"Location Not Found"} if schoolres is None else {'school_id': schoolres[0][0],
+                        'school_name':schoolres[0][1], 'school_address':schoolres[0][2]}
+                event = {'id': result[0], 'name': result[1], 'school': school,
+                    'host': host, 'time_start': result[5], 'description': result[11],
+                    'event_price': result[10], 'pictureUrl': 'https://asimshrestha2.github.io/imgs/content/environment.png' }
+            else:
+                abort(404)
+            return render_template('eventpage.html', event=event)
 
 # Function for all the login user page
 @application.route('/login', methods=['GET', 'POST'])
@@ -158,13 +177,45 @@ def calendar():
 #Search Page
 @application.route('/search')
 def search():
-    return(render_template('search.html'))
+    searchword = request.args.get('q', '')
+    query = "select * from event where event_name like '%" + searchword + "%';"
+    results = db.executeQuery(query)
+    return(render_template('search.html', results = results))
 
 #TODO: Add more to create event
 @application.route('/createevent', methods=['GET', 'POST'])
 def createevent():
     if request.method == 'POST':
-        return "1"
+        date_f = str(request.form['year'])+"-"+str(request.form['month'])+"-"+str(request.form['day'])
+        stime_f = str(request.form['hour'])+":"+str(request.form['minute'])+":00"
+        etime_f = str(int(request.form['hour'])+6)+":"+str(request.form['minute'])+":00"
+
+        hostres = db.executeQuery("select user_id from user where username='" + str(session.get('username')) + "';")
+        host_id = "User Not Found" if hostres is None else hostres[0][0]
+
+        event = {'event_name': request.form['eventname'], 'facility_id': request.form['facility_id'],
+        'school_id': request.form['school_id'], 'host_id': host_id,
+        'time_start': stime_f, 'time_end': etime_f,
+        'date': date_f, 'size': 123,
+        'event_type': 'Public', 'event_price': 20.00,
+        'description': request.form['description']}
+        db.executeQuery("""
+            insert into event(event_name, facility_id, school_id, host_id, time_start, time_end, date, size, event_type, event_price, description)
+            values('{event_name}', '{facility_id}', '{school_id}', '{host_id}', '{time_start}', '{time_end}', '{date}', '{size}', '{event_type}', '{event_price}', '{description}');
+        """.format(**event))
+        eventres = db.executeQuery("""select event_id, event_name from event
+            where event_name = '{event_name}' and school_id = '{school_id}' and host_id = '{host_id}';
+        """.format(**event))
+        print(eventres)
+        eventinfo = {}
+        if eventres is None:
+            eventinfo = None
+        else:
+            eventinfo = {'eid': eventres[0][0], 'ename': eventres[0][1]}
+        print(eventinfo)
+        if eventres:
+            return url_for('event', id=eventinfo['eid'], name=eventinfo['ename'])
+        return "-1"
     else:
         if session.get('userType') != None:
             return render_template('createevent.html')

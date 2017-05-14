@@ -44,8 +44,9 @@
         <input type="text" name="search" id="search" value="">
         <label for="search">Search</label>
       </div>
-      <div class="btn-small">
+      <div class="btn-small" id="search-btn">
         Search
+        <a href="#"><div class="btn-fill"></div></a>
       </div>
     </div>
     <div class="content main">
@@ -119,5 +120,13 @@
         Copyright (c) 2017 Asim Shrestha. All Rights Reserved.
       </div>
     </footer>
+    <script>
+    var searchbtn = document.getElementById('search-btn');
+    searchbtn.addEventListener('click', function(){
+      if(document.getElementById('search').value != null && document.getElementById('search').value != ""){
+        window.location = "/search?q=" + document.getElementById('search').value;
+      }
+    });
+    </script>
   </body>
 </html>

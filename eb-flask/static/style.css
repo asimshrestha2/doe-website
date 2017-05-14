@@ -69,9 +69,15 @@ a:hover{
 }
 
 .row-small{
+  position: relative;
   width: 100%;
   max-width: 600px;
   margin: 0 auto;
+}
+.position-right{
+    position: absolute;
+    right: 0;
+    top: 0;
 }
 
 .col-2{
@@ -171,6 +177,30 @@ a:hover{
 .btn-small:hover{
   color: #000000;
   background: #FFFFFF;
+}
+
+.btn-small.rect{
+  border: 1px solid #000000;
+  border-image: linear-gradient(45deg, #D585FF, #00FFEE) 1;
+  border-radius: 0px;
+  color: #000000;
+}
+
+.btn-small.rect:hover{
+  color: #FFFFFF;
+  background: linear-gradient(45deg, #D585FF, #00FFEE);
+}
+
+.btn-small.rect.warning{
+  border: 1px solid #000000;
+  border-image: linear-gradient(45deg, #D74177, #FFE98A) 1;
+  border-radius: 0px;
+  color: #000000;
+}
+
+.btn-small.rect.warning:hover{
+  color: #FFFFFF;
+  background: linear-gradient(45deg, #D74177, #FFE98A);
 }
 
 .rect-btn{
@@ -605,4 +635,10 @@ header.sub-page{
 .signup input[type=text], .signup input[type=password], .signup input[type=email], .createevent input[type=text]{
   border-bottom: 1px solid #000000;
   width: 100%;
+}
+
+.search-page input[type=text]{
+  border-bottom: 1px solid #000000;
+  width: 100%;
+  max-width: 300px;
 }

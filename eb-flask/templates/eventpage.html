@@ -15,25 +15,55 @@
     <meta name="twitter:image" content="https://asimshrestha2.github.io/portfoliov2/imgs/Asim_Ymir.png">
 {% endblock %}
 {% block content %}
-  <div class="event row-big">
-    <div class="image" style="background: url('{{ event.pictureUrl }}')">
-      <div class="text">
-        <div class="title">{{ event.name }}</div>
-        <div class="subtitle">{{ event.location }}</div>
+  {% if event %}
+    <div class="event row-big">
+      <div class="image" style="background: url('{{ event.pictureUrl }}')">
+        {% if session['username'] == event.host or session['userType'] == 'Admin' %}
+        <div class="position-right">
+          <div class="btn-small rect warning" id='remove-event'>Remove Event
+            <a href="#"><div class="btn-fill"></div></a>
+          </div>
+          <script>
+            re = document.getElementById('remove-event');
+            re.addEventListener('click', function(){
+              var request = new XMLHttpRequest();
+              request.open('DELETE', '/e/{{ event.id }}/{{ event.name }}', true);
+              request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+              request.onreadystatechange = function(e) {
+                if(request.readyState == XMLHttpRequest.DONE && request.status == 200) {
+                  var data = request.responseText;
+                  if(data == '1'){
+                    window.location = "/u/{{ session['username'] }}";
+                  } else if (data == '-1') {
+                    console.log("delete unsuccessful");
+                  }
+                }
+              }
+              request.send(null);
+            });
+          </script>
+        </div>
+        {% endif %}
+        <div class="text">
+          <div class="title">{{ event.name }}</div>
+          <div class="subtitle">{{ event.school.school_name }} - {{ event.school.school_address }}</div>
+        </div>
       </div>
-    </div>
-    <div class="function-bar">
-      <div class="created-by">
-        Event Hosted by: {{ event.host }}
+      <div class="function-bar">
+        <div class="created-by">
+          Event Hosted by: <a href="/u/{{ event.host }}">{{ event.host }}</a>
+        </div>
+        {% if session['username'] and session['userType'] %}
+        <div class="invite-options">
+          <div class="invite-btn">Going</div>
+          <div class="invite-btn">Ignore</div>
+        </div>
+        {% endif %}
       </div>
-      <div class="invite-options">
-        <div class="invite-btn">Going</div>
-        <div class="invite-btn">Ignore</div>
+      <div class="description">
+        <p>{{ event.description }}</p>
       </div>
+      <div class="fb-comments" data-href="http://localhost:5000/e/{{ event.id }}/{{ event.name }}" data-width="100%" data-numposts="5"></div>
     </div>
-    <div class="description">
-      <p>{{ event.discription }}</p>
-    </div>
-    <div class="fb-comments" data-href="http://localhost:5000/e/{{ event.name }}" data-width="100%" data-numposts="5"></div>
-  </div>
+  {% endif %}
 {% endblock %}

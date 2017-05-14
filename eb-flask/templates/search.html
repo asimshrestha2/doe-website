@@ -21,7 +21,40 @@
         <input type="text" name="search" id="search-p" value="">
         <label for="search-p">Search</label>
       </div>
-      <div id="btn-search" class="btn-small">Search</div>
+      <div class="position-right">
+        <div id="btn-search" class="btn-small rect">Search
+          <a href="#"><div class="btn-fill"></div></a>
+        </div>
+      </div>
     </div>
+    <div class="list">
+      <ul>
+    {% if results %}
+      {% for result in results %}
+        <li>
+          <div class="list-items">
+            <div class="title">{{ result[1] }}</div>
+            <div class="subtitle">{{ result[11] }}</div>
+            <a class="btn-fill" href="/e/{{ result[0] }}/{{ result[1] }}"><div class="btn-fill"></div></a>
+          </div>
+        </li>
+      {% endfor %}
+    {% else %}
+      <li>
+        <div class="list-items text-center">
+          <div class="title">No Results found.</div>
+        </div>
+      </li>
+    {% endif %}
+      </ul>
+    </div>
+    <script>
+    var searchbtn = document.getElementById('btn-search');
+    searchbtn.addEventListener('click', function(){
+      if(document.getElementById('search-p').value != null && document.getElementById('search-p').value != ""){
+        window.location = "/search?q=" + document.getElementById('search-p').value;
+      }
+    });
+    </script>
   </div>
 {% endblock %}

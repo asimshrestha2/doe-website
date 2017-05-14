@@ -30,19 +30,19 @@
     request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
     request.onreadystatechange = function(e) {
       if(request.readyState == XMLHttpRequest.DONE && request.status == 200) {
-          var data = JSON.parse(request.responseText);
-          console.log(data);
-          for (var i = 0; i < data.length; i++) {
-            clist.innerHTML += '<li><div class="list-header">' +
-              '<div class="title">'+data[i]['date']+'</div>' +
-              '</div></li>';
-            for (var j = 0; j < data[i]['events'].length; j++) {
-              clist.innerHTML += '<li><div class="list-items">'+
-              '<div class="title">'+data[i]['events'][j]['title']+'</div>'+
-              '<div class="subtitle">'+data[i]['events'][j]['description']+'</div>'+
-              '<a class="btn-fill" href="/e/'+data[i]['events'][j]['title']+'"><div class="btn-fill"></div></div></li>';
-            }
+        var data = JSON.parse(request.responseText);
+        console.log(data);
+        for (var i = 0; i < data.length; i++) {
+          clist.innerHTML += '<li><div class="list-header">' +
+            '<div class="title">'+data[i]['date']+'</div>' +
+            '</div></li>';
+          for (var j = 0; j < data[i]['events'].length; j++) {
+            clist.innerHTML += '<li><div class="list-items">'+
+            '<div class="title">'+data[i]['events'][j]['title']+'</div>'+
+            '<div class="subtitle">'+data[i]['events'][j]['description']+'</div>'+
+            '<a class="btn-fill" href="/e/'+data[i]['events'][j]['id']+"/"+data[i]['events'][j]['title']+'"><div class="btn-fill"></div></a></div></li>';
           }
+        }
       }
     }
     request.send("");

@@ -65,6 +65,7 @@
   <script>
   var school = document.getElementById('school');
   var facility = document.getElementById('facility');
+  var create = document.getElementById('create-btn');
   getSchools();
 
   school.addEventListener("change", function() {
@@ -72,6 +73,8 @@
       getfacilitiesforschool(this.value)
     }
   })
+
+  create.addEventListener("click", createEvent);
 
   function getSchools() {
     var request = new XMLHttpRequest();
@@ -92,7 +95,7 @@
 
   function getfacilitiesforschool(school_id) {
     var request = new XMLHttpRequest();
-    request.open('POST', '/createevent', true);
+    request.open('POST', '/getfacilitiesforschool', true);
     request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
     request.onreadystatechange = function(e) {
       if(request.readyState == XMLHttpRequest.DONE && request.status == 200) {
@@ -110,12 +113,16 @@
 
   function createEvent() {
     var request = new XMLHttpRequest();
-    request.open('POST', '/getfacilitiesforschool', true);
+    request.open('POST', '/createevent', true);
     request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
     request.onreadystatechange = function(e) {
       if(request.readyState == XMLHttpRequest.DONE && request.status == 200) {
         var data = request.responseText;
-        console.log(data);
+        if(data == '-1'){
+          console.log(":(");
+        } else {
+          window.location = data;
+        }
       }
     }
     request.send("school_id="+ school.value + "&facility_id=" + facility.value
@@ -126,7 +133,7 @@
                 + "&year=" + document.getElementById('year').value
                 + "&hour=" + document.getElementById('hour').value
                 + "&minute=" + document.getElementById('minute').value
-                + "&donation=" + document.getElementById('takes-donations').checked);
+                + "&donation=" + document.getElementById('donation-checkbox').checked);
   }
   </script>
 {% endblock %}
