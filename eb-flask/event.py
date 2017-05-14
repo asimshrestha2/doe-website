@@ -9,16 +9,14 @@ class Event:
 
     def serialize(self):
         return {
-            'id':self.id,
-            'name':self.name,
+            'name': self.name,
             'description':self.description,
             'pictureUrl':self.pictureUrl,
             'location': self.location,
-            'host': self.host,
+            'host': self.host
         }
 
     def __init__ (self, id, name, description, pictureUrl, location, host):
-        self.id = id
         self.name = name
         self.description = description
         self.pictureUrl = pictureUrl

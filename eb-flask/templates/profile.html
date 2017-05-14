@@ -71,11 +71,11 @@
         <div class="list-card row-big"><!--
           {% for event in user.events %}
         --><div class="card">
-            <div class="image" style="background: url('{{ event.pictureUrl }}'); background-size: cover">
-              <div class="title">{{ event.title }}</div>
+            <div class="image" style="background: url('https://asimshrestha2.github.io/imgs/content/environment.png'); background-size: cover">
+              <div class="title">{{ event[1] }}</div>
             </div>
-            <div class="description">{{ event.description }}</div>
-            <a href="{{ url_for('event', name=event.title) }}"><div class="btn-fill"></div></a>
+            <div class="description">{{ event[2] }}</div>
+            <a href="{{ url_for('event', id=event[0], name=event[2]) }}"><div class="btn-fill"></div></a>
           </div><!--
           {% endfor %}
           --></div>

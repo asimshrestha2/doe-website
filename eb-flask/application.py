@@ -23,29 +23,19 @@ def hello():
 @application.route('/u/<name>')
 def user(name=None):
     # This what the template needs to show all the data on the site
-    if 'userInfo' in session:
-        user = {'name': session['userInfo']['name'],
-                'title': session['userInfo']['title'],
-                'rating': [{'title': "Support", 'rating': session['userInfo']['rating']},
-                        {'title': "Apple", 'rating': session['userInfo']['rating']},
-                        {'title': "Potato", 'rating': session['userInfo']['rating']}],
-                'pictureUrl': session['userInfo']['pictureUrl'],
-                'events' : session['userInfo']['events']}
-    else:
-        user = {
-        'name': name,
-        'title': 'User',
-        'rating': [{'title': "Support", 'rating': 9},
-            {'title': "Apple", 'rating': 5},
-            {'title': "Potato", 'rating': 8}],
-        'pictureUrl': 'https://asimshrestha2.github.io/portfoliov2/imgs/Asim_Ymir.png',
-        'events': [{'name': "Dance", 'description': "This is a description for the dance event that is going on",
-            'pictureUrl': 'http://orig13.deviantart.net/ac10/f/2015/100/c/4/render_4_edited_by_asimshrestha2-d8p8rbi.png'},
-            {'name': "Dance No. 2", 'description': "This is a description for the dance event 2 that is going on",
-            'pictureUrl': 'http://orig13.deviantart.net/ac10/f/2015/100/c/4/render_4_edited_by_asimshrestha2-d8p8rbi.png'},
-            {'name': "Dance No. 3", 'description': "This is a description for the dance event 3 that is going on",
-            'pictureUrl': 'http://orig13.deviantart.net/ac10/f/2015/100/c/4/render_4_edited_by_asimshrestha2-d8p8rbi.png'}]
-        }
+    userres = db.executeQuery("select * from user where username='" + str(name) + "';")
+    user = None if userres is None else userres[0]
+
+    equery = "select event_id, event_name, description from event where host_id=" + str(user[0])+";"
+    evertres = db.executeQuery(equery)
+    events = None if evertres is None else evertres
+
+    user = {'name': user[1], 'title': user[5],
+                'rating': [{'title': "Support", 'rating': user[9]},
+                        {'title': "Apple", 'rating': user[9]},
+                        {'title': "Potato", 'rating': user[9]}],
+                'pictureUrl': 'https://asimshrestha2.github.io/imgs/content/environment.png',
+                'events' : events}
     return render_template('profile.html', user = user, name=name)
 
 
@@ -94,23 +84,7 @@ def login():
         #if sucessful will continue on, else will throw error inside executeQuery
         #just some debug stuff for now
         if result is not None:
-            #create some session variables with data that will be used frequently
             result = result[0]
-            eQRes = db.executeQuery(db.eventAttendingQuery.format(result[0]))
-            #lets populate our user class with the event information
-            events = []
-            if eQRes is not None: #if we don't have any we don't have to do this
-                for event in eQRes:
-                    #gets result of location query which returns school address and facility name
-                    locationQueryRes = db.executeQuery(db.locQuery.format(event[2],event[3]))
-                    if locationQueryRes is not None:
-                        locationQueryRes = locationQueryRes[0]
-                        #create actual location string to be displayed
-                        location = locationQueryRes[0] + "in facility: " + locationQueryRes[1]
-                        events.append(Event(event[1], event[11], "http://static.zerochan.net/Stardust.Dragon.full.1878025.jpg", db.executeQuery(db.locQuery.format(event[3]))[0][0], event[4]))
-            userInfo = User(result[1], result[5], 0, 'https://images3.alphacoders.com/761/thumb-350-761779.jpg', events)
-            #we can't save classes in sessions, but we can turn them into dictionaries
-            session['userInfo'] = userInfo.serialize()
             session['username'] = username
             session['userType'] = result[5]
             return url_for('user', name = username)
@@ -125,7 +99,7 @@ def logout():
     # remove the username from the session if it's there
     session.pop('username', None)
     session.pop('userType', None)
-    session.pop('userInfo', None)
+    #session.pop('userInfo', None)
     return redirect(url_for('hello'))
 
 @application.route('/signup', methods=['GET', 'POST'])
