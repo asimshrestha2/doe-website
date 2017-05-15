@@ -80,6 +80,12 @@ a:hover{
     top: 0;
 }
 
+.position-left{
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
 .col-2{
   width: 100%;
   display: flex;
@@ -538,6 +544,23 @@ header.sub-page{
   display: flex;
   align-items: stretch;
   justify-content: space-around;
+}
+
+.profileshare>div{
+  float: left;
+}
+
+.profileshare .rect{
+  color: #FFFFFF;
+  line-height: 20px;
+  vertical-align: center;
+}
+
+.profileshare img{
+  width: 20px;
+  height: 20px;
+  padding-right: 10px;
+  float: left;
 }
 
 .stat{

@@ -2,7 +2,7 @@
 {% block title %}{{ event.name }} - Event{% endblock %}
 {% block head %}
     {{ super() }}
-    <meta name="theme-color" content="#dcb0a5">
+    <meta name="theme-color" content="#1BFFFF">
     <meta name="viewport" content="width=device-width, initial-scale=1.0,  maximum-scale=1.0, user-scalable=no">
     <meta property="og:title" content="{{ event.name }} - Event">
     <meta property="og:type" content="profile">
@@ -18,6 +18,20 @@
   {% if event %}
     <div class="event row-big">
       <div class="image" style="background: url('{{ event.pictureUrl }}')">
+        <div class="position-left profileshare" style="left:10px; top:20px;">
+          <div class="btn-small rect" id='remove-event'>
+            <img src="{{ url_for('static', filename='twitter.png') }}" alt="Twitter">Tweet
+            <a target="_blank" href="https://twitter.com/intent/tweet?text={{ event.name }} at {{ event.school.school_name }} http://www.doemoments.com/e/{{ event.id }}/{{ event.name.replace(" ", "%20") }}/">
+                <div class="btn-fill"></div></a>
+          </div>
+          <div class="btn-small rect" id='remove-event'>
+            <img src="{{ url_for('static', filename='fb.png') }}" alt="FaceBook">Share
+            <a target="_blank" href="https://www.facebook.com/dialog/feed?app_id=101009160446325
+                &display=popup&amp;caption={{ event.name }} at {{ event.school.school_name }}
+                &link=http://www.doemoments.com/e/{{ event.id }}/{{ event.name.replace(" ", "%20") }}/">
+                <div class="btn-fill"></div></a>
+          </div>
+        </div>
         {% if session['username'] == event.host or session['userType'] == 'Admin' %}
         <div class="position-right">
           <div class="btn-small rect warning" id='remove-event'>Remove Event

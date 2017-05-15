@@ -2,7 +2,7 @@
 {% block title %}{{ user.name }} - Profile{% endblock %}
 {% block head %}
     {{ super() }}
-    <meta name="theme-color" content="#dcb0a5">
+    <meta name="theme-color" content="#1BFFFF">
     <meta name="viewport" content="width=device-width, initial-scale=1.0,  maximum-scale=1.0, user-scalable=no">
     <meta property="og:title" content="{{ user.name }} - Profile">
     <meta property="og:type" content="profile">
@@ -35,7 +35,7 @@
         {% endif %}
       </div>
     </div>
-    {% if session['userType'] == 'Public' %}
+    {% if user.title == 'Public' %}
     <div class="profile-stats row-big">
       <div class="stat">
         <div class="title">
@@ -81,17 +81,47 @@
           --></div>
       </div>
     </div>
-    {% elif session['userType'] == 'Admin' %}
+    {% elif user.title == 'Admin' and session['userType'] == 'Admin' %}
     <div class="admin-panel row-big">
       This is the Admin Panel
     </div>
-    {% elif session['userType'] == 'School' %}
+    <div class="profile-events">
+      <div class="p-event">
+        <div class="list-card row-big"><!--
+          {% for event in user.events %}
+        --><div class="card">
+            <div class="image" style="background: url('https://asimshrestha2.github.io/imgs/content/environment.png'); background-size: cover">
+              <div class="title">{{ event[1] }}</div>
+            </div>
+            <div class="description">{{ event[2] }}</div>
+            <a href="{{ url_for('event', id=event[0], name=event[2]) }}"><div class="btn-fill"></div></a>
+          </div><!--
+          {% endfor %}
+          --></div>
+      </div>
+    </div>
+    {% elif user.title == 'School' and session['userType'] == 'School' %}
     <div class="school-panel row-big">
       This is the School Panel
     </div>
+    <div class="profile-events">
+      <div class="p-event">
+        <div class="list-card row-big"><!--
+          {% for event in user.events %}
+        --><div class="card">
+            <div class="image" style="background: url('https://asimshrestha2.github.io/imgs/content/environment.png'); background-size: cover">
+              <div class="title">{{ event[1] }}</div>
+            </div>
+            <div class="description">{{ event[2] }}</div>
+            <a href="{{ url_for('event', id=event[0], name=event[2]) }}"><div class="btn-fill"></div></a>
+          </div><!--
+          {% endfor %}
+          --></div>
+      </div>
+    </div>
     {% else %}
     <div class="error row-big text-center">
-      Missing User Type
+      User Info Privated
     </div>
     {% endif %}
   {% else %}

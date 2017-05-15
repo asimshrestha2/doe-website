@@ -34,7 +34,7 @@ def user(name=None):
                 'rating': [{'title': "Support", 'rating': user[9]},
                         {'title': "Apple", 'rating': user[9]},
                         {'title': "Potato", 'rating': user[9]}],
-                'pictureUrl': 'https://asimshrestha2.github.io/imgs/content/environment.png',
+                'pictureUrl': 'https://asimshrestha2.github.io/portfoliov2/imgs/Asim_Ymir.png',
                 'events' : events}
     return render_template('profile.html', user = user, name=name)
 
