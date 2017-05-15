@@ -69,6 +69,7 @@
     <div class="profile-events">
       <div class="p-event">
         <div class="list-card row-big"><!--
+          {% if user.events %}
           {% for event in user.events %}
         --><div class="card">
             <div class="image" style="background: url('https://asimshrestha2.github.io/imgs/content/environment.png'); background-size: cover">
@@ -78,6 +79,7 @@
             <a href="{{ url_for('event', id=event[0], name=event[2]) }}"><div class="btn-fill"></div></a>
           </div><!--
           {% endfor %}
+          {% endif %}
           --></div>
       </div>
     </div>
@@ -88,6 +90,7 @@
     <div class="profile-events">
       <div class="p-event">
         <div class="list-card row-big"><!--
+          {% if user.events %}
           {% for event in user.events %}
         --><div class="card">
             <div class="image" style="background: url('https://asimshrestha2.github.io/imgs/content/environment.png'); background-size: cover">
@@ -97,6 +100,7 @@
             <a href="{{ url_for('event', id=event[0], name=event[2]) }}"><div class="btn-fill"></div></a>
           </div><!--
           {% endfor %}
+          {% endif %}
           --></div>
       </div>
     </div>
@@ -107,6 +111,7 @@
     <div class="profile-events">
       <div class="p-event">
         <div class="list-card row-big"><!--
+          {% if user.events %}
           {% for event in user.events %}
         --><div class="card">
             <div class="image" style="background: url('https://asimshrestha2.github.io/imgs/content/environment.png'); background-size: cover">
@@ -116,6 +121,7 @@
             <a href="{{ url_for('event', id=event[0], name=event[2]) }}"><div class="btn-fill"></div></a>
           </div><!--
           {% endfor %}
+          {% endif %}
           --></div>
       </div>
     </div>
