@@ -38,6 +38,22 @@
           </nav>
         </div>
       </div>
+      {% if fe[0] %}
+        {% if fe[0].event_type != 'private' %}
+          <div class="row-big text">
+            <div class="smalltext">Featured Event</div>
+            <div class="title">{{ fe[0].name }}</div>
+            <div class="subtitle">{{ fe[0].school.school_name }} - {{ fe[0].school.school_address }}</div>
+          </div>
+          <a href="/e/{{ fe[0].id }}/{{ fe[0].name }}"><div class="btn-fill"></div></a>
+          <script>
+            window.onload = function() {
+              document.getElementsByClassName('main')[0].style.background = "url('{{ fe[0].pictureUrl }}')";
+              document.getElementsByClassName('main')[0].style.backgroundSize = "cover";
+            }
+          </script>
+        {% endif %}
+      {% endif %}
     </header>
     <div class="search-bar">
       <div class="search-box">
@@ -85,32 +101,19 @@
         <div class="list">
           <ul>
             <li><div class="list-header">
-              <div class="title">Top Rated Events</div>
+              <div class="title">Featured Events</div>
             </div></li>
-            <li><div class="list-items">
-              <div class="title">Apples 1</div>
-              <div class="subtitle">At Apple Street</div>
-            </div></li>
-            <li><div class="list-items">
-              <div class="title">Apples 2</div>
-              <div class="subtitle">At Apple Street</div>
-            </div></li>
-            <li><div class="list-items">
-              <div class="title">Apples 3</div>
-              <div class="subtitle">At Apple Street</div>
-            </div></li>
-            <li><div class="list-items">
-              <div class="title">Apples 4</div>
-              <div class="subtitle">At Apple Street</div>
-            </div></li>
-            <li><div class="list-items">
-              <div class="title">Apples 5</div>
-              <div class="subtitle">At Apple Street</div>
-            </div></li>
-            <li><div class="list-items">
-              <div class="title">Apples 6</div>
-              <div class="subtitle">At Apple Street</div>
-            </div></li>
+            {% if fe %}
+              {% for e in fe %}
+                {% if e.event_type != 'private' %}
+                  <li><div class="list-items">
+                    <div class="title">{{ e.name }}</div>
+                    <div class="subtitle">{{ e.school.school_name }} - {{ e.school.school_address }}</div>
+                    <a href="/e/{{ e.id }}/{{ e.name }}"><div class="btn-fill"></div></a>
+                  </div></li>
+                {% endif %}
+              {% endfor %}
+            {% endif %}
           </ul>
         </div>
       </div>

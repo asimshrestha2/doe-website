@@ -6,6 +6,7 @@ import datetime
 from werkzeug.utils import secure_filename
 import dbconnection
 import calendarf
+import eventmanager
 import urllib.parse as urllib
 from user import User
 from event import Event
@@ -17,7 +18,7 @@ db = dbconnection.DBManager()
 
 @application.route('/')
 def hello():
-    return render_template('index.html')
+    return render_template('index.html', fe = eventmanager.getfeaturedevent())
 
 @application.route('/u/')
 @application.route('/u/<name>')
