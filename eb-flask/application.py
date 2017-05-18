@@ -49,6 +49,9 @@ def user(name=None):
         facilities = db.executeQuery(query)
         userr['fs'] = facilities
         print(userr)
+
+    if(user[5] == 'StateOfficial' and session.get('userstate') is not None):
+        userr['sos'] = stripeM.allTransactionwithstate(session.get('userstate'))
     return render_template('profile.html', user = userr, name=name)
 
 
