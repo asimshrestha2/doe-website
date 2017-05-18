@@ -40,14 +40,13 @@ def user(name=None):
 
 
 
-    userr = {'name': user[1], 'title': user[5],
+    user = {'name': user[1], 'title': user[5],
             'rating': [{'title': "User Rating", 'rating': user[9]}],
             'pictureUrl': 'https://asimshrestha2.github.io/portfoliov2/imgs/Asim_Ymir.png',
             'events' : events}
     if(user[5] == 'School'):
-        query = "select * from facility where school_id="+str(user[10])+";"
-        facilities = db.executeQuery(query)
-        userr['fs'] = facilities
+        facilities = db.executeQuery(db.getFacilitiesQuery.format(str(user[10])))
+        user['fs'] = facilities
         print(userr)
     return render_template('profile.html', user = userr, name=name)
 
@@ -86,6 +85,9 @@ def event(id=None, name=None):
                     event = {'id': result[0], 'name': result[1], 'school': school,
                     'host': host, 'time_start': result[5], 'description': result[11],
                     'event_price': result[10], 'pictureUrl': 'https://asimshrestha2.github.io/imgs/content/environment.png' }
+                    pictureURLres = db.executeQuery(db.selectImageQuery.format(result[0]))
+                    if pictureURLres is not None:
+                        event['pictureUrl'] = pictureURLres[0][0]
                     #since these variables are needed for payment, make sure donation is only on this page so people won't somehow donate to another event
                     session['eid'] = result[0]
                     session['ename'] = result[1]
@@ -216,11 +218,11 @@ def createevent():
         'time_start': stime_f, 'time_end': etime_f,
         'date': date_f, 'size': 123,
         'event_type': request.form['event_type'], 'event_price': 20.00,
-        'description': request.form['description']}
+        'description': request.form['description'],'pictureUrl':request.form['photolink']}
         print(event)
         db.executeQuery("""
             insert into event(event_name, facility_id, school_id, host_id, time_start, time_end, date, size, event_type, event_price, description)
-            values('{event_name}', '{facility_id}', '{school_id}', '{host_id}', '{time_start}', '{time_end}', '{date}', '{size}', '{event_type}', '{event_price}', '{description}');
+            values('{event_name}', '{facility_id}', '{school_id}', '{host_id}', '{time_start}', '{time_end}', '{date}', '{size}', '{event_type}', '{event_price}', '{description}','{pictureUrl}');
         """.format(**event))
         eventres = db.executeQuery("""select event_id, event_name from event
             where event_name = '{event_name}' and school_id = '{school_id}' and host_id = '{host_id}';

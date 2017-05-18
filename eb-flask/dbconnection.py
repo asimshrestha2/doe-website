@@ -31,6 +31,9 @@ class DBManager:
     #Check if username already exists
     chkUsernameQuery = r"""select username from user where username = '{}';"""
 
+    #Get event image query
+    selectImageQuery = r"""select event_url from event where event_id = {};"""
+    
     #Get school info
     schoolInfoQuery = r"""select * from school where school_id = {};"""
 
