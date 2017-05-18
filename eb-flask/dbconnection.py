@@ -2,13 +2,13 @@ import MySQLdb
 
 class DBManager:
 
-    #Query for logging in 
+    #Query for logging in
     loginQuery = r"""select * from user where '{}' = username and '{}' = password;"""
     #Query for getting attendence
     eventAttendingQuery = r"""select * from event where event_id in (
                               select event_id from attendance where user_id = {});"""
-    #Query for getting event location 
-    locQuery = r"""select school_address, facility_name from school, facility where school.school_id = facility.school_id and school.school_id = {} and facility_id = {};""" 
+    #Query for getting event location
+    locQuery = r"""select school_address, facility_name from school, facility where school.school_id = facility.school_id and school.school_id = {} and facility_id = {};"""
 
     #Query for getting users (1 filter)
     selectUserQuery = r"""select * from user where username = '{}';"""
@@ -24,7 +24,7 @@ class DBManager:
 
     #Query for getting host of an event
     selectHostQuery = r"""select username from user where user_id={};"""
-    
+
     #Query for getting user e-mail
     getUserEmailQuery = r"""select email from user where username = '{}';"""
 
@@ -38,8 +38,8 @@ class DBManager:
     selectFName = r"""select facility_name from facility where facility_id = {} and school_id = {};"""
     #---in progress---
     #Query for getting names of some events perhaps to populate a list with a set amount of events
-    populateEvents = "select event_name, facility_name" 
-    
+    populateEvents = "select event_name, facility_name"
+
     def _init(self):
         pass
 
@@ -57,4 +57,3 @@ class DBManager:
 
         c.close()
         db.close()
-
