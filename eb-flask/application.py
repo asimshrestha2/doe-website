@@ -142,7 +142,7 @@ def signup():
         state = checkInput(request.form['state'])
         isUserExist = db.executeQuery(db.chkUsernameQuery.format(username))
          #invariant: No username's can be the same
-        if result is not None: #then we already have this username
+        if isUserExist is not None: #then we already have this username
             return "-2"
         row1 = db.executeQuery(db.registerQuery.format(name,email,phone_num,uzip,user_type,username,password,user_address,0,state))
         #create some session variables with data that will be used frequently
