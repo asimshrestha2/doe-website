@@ -25,7 +25,7 @@
                 <div class="btn-fill"></div></a>
           </div>
           <div class="btn-small rect" id='remove-event'>
-            <img src="{{ url_for('static', filename='fb.png') }}" alt="FaceBook">Share
+            <img src="{{ url_for('static', filename='fb.png') }}" alt="facebook">Share
             <a target="_blank" href="https://www.facebook.com/dialog/feed?app_id=101009160446325
 &display=popup&amp;caption={{ event.name }} at {{ event.school.school_name }}
 &link=http://www.doemoments.com/e/{{ event.id }}/{{ event.name.replace(" ", "%20") }}/">
@@ -34,12 +34,15 @@
         </div>
         {% if session['username'] == event.host or session['userType'] == 'Admin' %}
         <div class="position-right">
-          <div class="btn-small rect warning" id='remove-event'>Remove Event
-            <a href="#"><div class="btn-fill"></div></a>
+          <div class="btn-small rect warning" style="z-index: 999999;" onclick="removeEvent();">Remove Event
+            <a href="#" id='remove-event'><div class="btn-fill" ></div></a>
           </div>
           <script>
-            re = document.getElementById('remove-event');
+            var re = document.getElementById('remove-event');
             re.addEventListener('click', function(){
+              removeEvent();
+            });
+            function removeEvent() {
               var request = new XMLHttpRequest();
               request.open('DELETE', '/e/{{ event.id }}/{{ event.name }}', true);
               request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
@@ -54,7 +57,7 @@
                 }
               }
               request.send(null);
-            });
+            }
           </script>
         </div>
         {% endif %}

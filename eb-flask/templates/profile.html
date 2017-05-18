@@ -139,6 +139,32 @@
           --></div>
       </div>
     </div>
+    {% elif user.title == 'StateOfficial' and session['userType'] == 'StateOfficial' %}
+    <div class="list row-big">
+      <ul>
+      {% if user.sos %}
+        <li>
+          <div class="list-header">
+            <div class="title">Your Report</div>
+          </div>
+        </li>
+        {% for so in user.sos %}
+          <li>
+            <div class="list-items">
+              <div class="title">{{ so.event_name }} - {{ so.state }} [${{ so.amount }}]</div>
+              <a class="btn-fill" href="/e/{{ so.event_id }}/{{ so.event_name }}"><div class="btn-fill"></div></a>
+            </div>
+          </li>
+        {% endfor %}
+      {% else %}
+        <li>
+          <div class="list-items text-center">
+            <div class="title">No Report of your state.</div>
+          </div>
+        </li>
+      {% endif %}
+      </ul>
+    </div>
     {% else %}
     <div class="error row-big text-center">
       User Info Privated

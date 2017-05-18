@@ -48,6 +48,9 @@ def user(name=None):
         facilities = db.executeQuery(db.getFacilitiesQuery.format(str(user[10])))
         user['fs'] = facilities
         print(userr)
+
+    if(user[5] == 'StateOfficial' and session.get('userstate') is not None):
+        userr['sos'] = stripeM.allTransactionwithstate(session.get('userstate'))
     return render_template('profile.html', user = userr, name=name)
 
 
@@ -144,7 +147,7 @@ def signup():
         state = checkInput(request.form['state'])
         isUserExist = db.executeQuery(db.chkUsernameQuery.format(username))
          #invariant: No username's can be the same
-        if result is not None: #then we already have this username
+        if isUserExist is not None: #then we already have this username
             return "-2"
         row1 = db.executeQuery(db.registerQuery.format(name,email,phone_num,uzip,user_type,username,password,user_address,0,state))
         #create some session variables with data that will be used frequently
