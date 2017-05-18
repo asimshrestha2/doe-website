@@ -85,7 +85,10 @@
     </div>
     {% elif user.title == 'Admin' and session['userType'] == 'Admin' %}
     <div class="admin-panel row-big">
-      This is the Admin Panel
+      <div class="btn-small rect">
+        Search Events
+        <a href="/eventsearch"><div class="btn-fill"></div></a>
+      </div>
     </div>
     <div class="profile-events">
       <div class="p-event">
@@ -106,7 +109,18 @@
     </div>
     {% elif user.title == 'School' and session['userType'] == 'School' %}
     <div class="school-panel row-big">
-      This is the School Panel
+      <div class="profile-stats row-big">
+        <div class="stat">
+          {% if user.fs %}
+            <div class="title">Facility</div>
+            <ul>
+            {% for f in user.fs %}
+              <li>{{ f[2] }}</li>
+            {% endfor %}
+            </ul>
+          {% endif %}
+        </div>
+      </div>
     </div>
     <div class="profile-events">
       <div class="p-event">

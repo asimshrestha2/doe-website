@@ -55,6 +55,10 @@
       <label for="address">Address</label>
     </div>
     <div class="input-field">
+      <input type="text" name="state" id="state" value="">
+      <label for="state">State</label>
+    </div>
+    <div class="input-field">
       <input type="text" name="zip" id="zip" value="">
       <label for="zip">ZIP Code</label>
     </div>
@@ -113,8 +117,10 @@
         if(request.readyState == XMLHttpRequest.DONE && request.status == 200) {
           var data = request.responseText;
           //console.log(data);
-          if (data == '-1') {
+          if (data == '-2') {
             log.innerText = "Username is taken.";
+          } else if(data == '-1'){
+            log.innerText = "Database Error.";
           } else {
             window.location = data;
           }
@@ -127,7 +133,8 @@
                   "&firstname=" + document.getElementById('firstname').value +
                   "&lastname=" + document.getElementById('lastname').value +
                   "&zip=" + document.getElementById('zip').value +
-                  "&address=" + document.getElementById('address').value );
+                  "&address=" + document.getElementById('address').value +
+                  "&state=" + document.getElementById('state').value );
     } else {
       log.innerText = "Please Make Sure all your fields are entered correctly! :P";
     }

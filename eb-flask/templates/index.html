@@ -72,30 +72,22 @@
             <li><div class="list-header">
               <div class="title">Events Near You</div>
             </div></li>
-            <li><div class="list-items">
-              <div class="title">Apples 1</div>
-              <div class="subtitle">At Apple Street</div>
+            {% if se %}
+              {% for e in se %}
+                {% if e.event_type != 'private' %}
+                  <li><div class="list-items">
+                    <div class="title">{{ e.name }}</div>
+                    <div class="subtitle">{{ e.school.school_name }} - {{ e.school.school_address }}</div>
+                    <a href="/e/{{ e.id }}/{{ e.name }}"><div class="btn-fill"></div></a>
+                  </div></li>
+                {% endif %}
+              {% endfor %}
+            {% else %}
+            <li><div class="list-items text-center">
+              <div class="title">No Events Near You!</div>
+              <a href="/login"><div class="btn-fill"></div></a>
             </div></li>
-            <li><div class="list-items">
-              <div class="title">Apples 2</div>
-              <div class="subtitle">At Apple Street</div>
-            </div></li>
-            <li><div class="list-items">
-              <div class="title">Apples 3</div>
-              <div class="subtitle">At Apple Street</div>
-            </div></li>
-            <li><div class="list-items">
-              <div class="title">Apples 4</div>
-              <div class="subtitle">At Apple Street</div>
-            </div></li>
-            <li><div class="list-items">
-              <div class="title">Apples 5</div>
-              <div class="subtitle">At Apple Street</div>
-            </div></li>
-            <li><div class="list-items">
-              <div class="title">Apples 6</div>
-              <div class="subtitle">At Apple Street</div>
-            </div></li>
+            {% endif %}
           </ul>
         </div>
         <div class="list">

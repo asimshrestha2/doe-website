@@ -1,0 +1,98 @@
+{% extends "layout.html" %}
+{% block title %}Login - DOE{% endblock %}
+{% block head %}
+    {{ super() }}
+    <meta name="theme-color" content="#1BFFFF">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,  maximum-scale=1.0, user-scalable=no">
+    <meta property="og:title" content="Search - DOE">
+    <meta property="og:type" content="profile">
+    <meta property="og:url" content="{{ url_for('search') }}">
+    <meta property="og:image" content="https://asimshrestha2.github.io/portfoliov2/imgs/Asim_Ymir.png">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@Asim_Shresth">
+    <meta name="twitter:title" content="Search - DOE">
+    <meta name="twitter:description" content="Search - DOE">
+    <meta name="twitter:image" content="https://asimshrestha2.github.io/portfoliov2/imgs/Asim_Ymir.png">
+{% endblock %}
+{% block content %}
+  <div class="search-page row-big">
+    <div class="row-small">
+      <div class="input-field">
+        <input type="text" name="search" id="search-p" value="">
+        <label for="search-p">Search</label>
+      </div>
+      <div class="position-right">
+        <div class="">
+          <input type="date" id="start-date">
+          <input type="date" id="end-date">
+          <div id="btn-search" class="btn-small rect" style="float: right">Search
+            <a href="#"><div class="btn-fill"></div></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="list">
+      <ul id='slist'>
+      </ul>
+    </div>
+    <script>
+    var searchbtn = document.getElementById('btn-search');
+    var slist = document.getElementById('slist');
+    document.addEventListener('keydown', function(e){
+      if (e.keyCode == 13 && document.getElementById('search-p') === document.activeElement) {
+        searchEvents();
+      }
+    });
+
+    searchbtn.addEventListener('click', function(){
+      searchEvents();
+    });
+
+    function searchEvents(){
+      if(document.getElementById('search-p').value != null && document.getElementById('search-p').value != ""){
+        var sdres = "search=" + document.getElementById('search-p').value;
+        var sd = document.getElementById('start-date');
+        var ed = document.getElementById('end-date');
+        if(sd.value != ""){ sdres += "&start-date=" + sd.value; } else {
+          sdres += "&start-date="
+        }
+        if(ed.value != ""){ sdres += "&end-date=" + ed.value; } else {
+          sdres += "&end-date="
+        }
+        var request = new XMLHttpRequest();
+        request.open('POST', '/eventsearch', true);
+        request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+        request.onreadystatechange = function(e) {
+          if(request.readyState == XMLHttpRequest.DONE && request.status == 200) {
+            var data = request.responseText;
+            if (data == '-1') {
+              slist.innerHTML = "<li>\n" +
+                "<div class=\"list-items text-center\">\n" +
+                "  <div class=\"title\">Could not find any results</div>\n" +
+                "  <div class=\"subtitle\"></div>\n</div>\n</li>\n";
+            } else {
+              data = JSON.parse(data);
+              createlist(data);
+            }
+          }
+        }
+        request.send(sdres);
+      }
+    }
+
+    function createlist(list){
+      slist.innerHTML = "";
+      for (var i = 0; i < list.length; i++) {
+        slist.innerHTML += "<li>" +
+          "<div class=\"list-items\">" +
+          "  <div class=\"title\"> " + list[i]['name'] + "</div>" +
+          "  <div class=\"subtitle\">" + list[i]['description'] + "</div>" +
+          "  <a class=\"btn-fill\" href=\"/e/" + list[i]['id'] + "/" + list[i]['name'] + "\"><div class=\"btn-fill\"></div></a>" +
+          "</div>" +
+        "</li>";
+      }
+    }
+
+    </script>
+  </div>
+{% endblock %}

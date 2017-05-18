@@ -618,6 +618,7 @@ header.sub-page{
   display: inline-block;
   box-shadow: 0 2px 5px #a1a1a1;
   border-radius: 2px;
+  overflow: hidden;
 }
 
 .card .image{

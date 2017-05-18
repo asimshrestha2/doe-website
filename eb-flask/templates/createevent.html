@@ -26,15 +26,17 @@
         <textarea id="eventdescription" placeholder="Description"></textarea>
       </div>
       <div class="date-selector">
-        Event Date: <br>
-        Month <input type="number" id="month" min="1" max="12">
-        Day <input type="number" id="day" min="1" max="31">
-        Year <input type="number" id="year" min="2017" max="2019">
+        Event Date: <input type="date" id="date">
       </div>
       <div class = "time-selector">
-        Event Time: <br>
-        Hour: <input type ="number" id="hour" min="1" max="24">
-        Minute: <input type="number" id="minute" min="0" max="60">
+        Event Start Time: <br>
+        Hour: <input type ="number" id="shour" min="1" max="24">
+        Minute: <input type="number" id="sminute" min="0" max="60">
+      </div>
+      <div class = "time-selector">
+        Event End Time: <br>
+        Hour: <input type ="number" id="ehour" min="1" max="24">
+        Minute: <input type="number" id="eminute" min="0" max="60">
       </div>
       <div class="school-selector">
         Select School:
@@ -112,6 +114,18 @@
   }
 
   function createEvent() {
+
+    var radios = document.getElementsByName('genderS');
+    var event_type = 'Public'
+    for (var i = 0, length = radios.length; i < length; i++) {
+        if (radios[i].checked) {
+            // do whatever you want with the checked radio
+            event_type = radios[i].value;
+            // only one radio can be logically checked, don't check the rest
+            break;
+        }
+    }
+
     var request = new XMLHttpRequest();
     request.open('POST', '/createevent', true);
     request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
@@ -128,12 +142,13 @@
     request.send("school_id="+ school.value + "&facility_id=" + facility.value
                 + "&description=" + document.getElementById('eventdescription').value
                 + "&eventname=" + document.getElementById('eventname').value
-                + "&month=" + document.getElementById('month').value
-                + "&day=" + document.getElementById('day').value
-                + "&year=" + document.getElementById('year').value
-                + "&hour=" + document.getElementById('hour').value
-                + "&minute=" + document.getElementById('minute').value
-                + "&donation=" + document.getElementById('donation-checkbox').checked);
+                + "&date=" + document.getElementById('date').value
+                + "&shour=" + document.getElementById('shour').value
+                + "&sminute=" + document.getElementById('sminute').value
+                + "&ehour=" + document.getElementById('ehour').value
+                + "&eminute=" + document.getElementById('eminute').value
+                + "&donation=" + document.getElementById('donation-checkbox').checked
+                + "&event_type=" + event_type);
   }
   </script>
 {% endblock %}

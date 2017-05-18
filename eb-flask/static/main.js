@@ -1,4 +1,4 @@
-window.onload = function() {
+document.addEventListener("DOMContentLoaded", function(event) {
   var inputHTML = document.getElementsByTagName('input');
   for (var i = 0; i < inputHTML.length; i++) {
     if(inputHTML[i].type == "text" || inputHTML[i].type == "password"){
@@ -15,4 +15,4 @@ window.onload = function() {
       document.getElementById('menu-content').classList.toggle("show");
     });
   }
-}
+});

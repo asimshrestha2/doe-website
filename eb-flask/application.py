@@ -19,14 +19,14 @@ application = Flask(__name__)
 db = DBManager()
 stripeM = StripeManager()
 #set secret key
+@application.route('/')
+def hello():
+    se = None if session.get('userstate') == None else eventmanager.geteventswithstate(session.get('userstate'))
+    return render_template('index.html', fe = eventmanager.getfeaturedevent(), se = se)
 
 # set the secret key.  keep this really secret:
 #TODO: Change FLASK secret_key
 application.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
-
-@application.route('/')
-def hello():
-    return render_template('index.html', fe = eventmanager.getfeaturedevent())
 
 @application.route('/u/')
 @application.route('/u/<name>')
@@ -34,17 +34,22 @@ def user(name=None):
     # This what the template needs to show all the data on the site
     userres = db.executeQuery(db.selectUserQuery.format(str(name)))
     user = None if userres is None else userres[0]
-    
+
     evertres = db.executeQuery(db.selectUserEventQuery.format(str(user[0])))
     events = None if evertres is None else evertres
 
-    user = {'name': user[1], 'title': user[5],
-                'rating': [{'title': "Support", 'rating': user[9]},
-                        {'title': "Apple", 'rating': user[9]},
-                        {'title': "Potato", 'rating': user[9]}],
-                'pictureUrl': 'https://asimshrestha2.github.io/portfoliov2/imgs/Asim_Ymir.png',
-                'events' : events}
-    return render_template('profile.html', user = user, name=name)
+
+
+    userr = {'name': user[1], 'title': user[5],
+            'rating': [{'title': "User Rating", 'rating': user[9]}],
+            'pictureUrl': 'https://asimshrestha2.github.io/portfoliov2/imgs/Asim_Ymir.png',
+            'events' : events}
+    if(user[5] == 'School'):
+        query = "select * from facility where school_id="+str(user[10])+";"
+        facilities = db.executeQuery(query)
+        userr['fs'] = facilities
+        print(userr)
+    return render_template('profile.html', user = userr, name=name)
 
 
 @application.route('/e/')
@@ -72,7 +77,7 @@ def event(id=None, name=None):
                 hostres = db.executeQuery(db.selectHostQuery.format(str(result[4])))
                 host = "User Not Found" if hostres is None else hostres[0][0]
                 schoolres = db.executeQuery(db.schoolInfoQuery.format(str(result[3])))
-                if schoolres is None:          
+                if schoolres is None:
                     school = {'school_name':"Location Not Found"}
                 else:
                     schoolres = schoolres[0]
@@ -88,7 +93,7 @@ def event(id=None, name=None):
                 return render_template('eventpage.html', event=event, eventname = name, host = host, key='pk_test_Wb0XXIL9w6ez0dqn0z4JLIg4')
             else:
                 abort(404)
-            
+
 # Function for all the login user page
 @application.route('/login', methods=['GET', 'POST'])
 def login():
@@ -102,12 +107,15 @@ def login():
         #just some debug stuff for now
         if result is not None:
             result = result[0]
+            session['userstate'] = result[12]
             session['username'] = username
             session['userType'] = result[5]
             return url_for('user', name = username)
         #else we have wrong password
         return "-1"
     else:
+        if(session.get('username')):
+            return redirect(url_for('hello'));
         return render_template('login.html')
 
 #TODO: Change logout return
@@ -131,11 +139,12 @@ def signup():
         username = checkInput(request.form['username'])
         password = checkInput(request.form['password'])
         user_address = checkInput(request.form['address'])
+        state = checkInput(request.form['state'])
         isUserExist = db.executeQuery(db.chkUsernameQuery.format(username))
          #invariant: No username's can be the same
         if result is not None: #then we already have this username
             return "-2"
-        row1 = db.executeQuery(db.registerQuery.format(name,email,phone_num,uzip,user_type,username,password,user_address,0))
+        row1 = db.executeQuery(db.registerQuery.format(name,email,phone_num,uzip,user_type,username,password,user_address,0,state))
         #create some session variables with data that will be used frequently
         if row1:
             # Returns if query somehow returns a row which it shouldnt because we are inserting
@@ -171,13 +180,33 @@ def search():
     results = db.executeQuery(query)
     return(render_template('search.html', results = results))
 
+@application.route('/eventsearch', methods=['GET', 'POST'])
+def eventsearch():
+    if request.method == 'POST':
+        events = []
+        sd = request.form['start-date']
+        ed = request.form['end-date']
+        searchword = request.form['search']
+        events = eventmanager.geteventsearch(sd, ed, searchword)
+        response = application.response_class(
+            response=json.dumps(events),
+            status=200,
+            mimetype='application/json'
+        )
+        return "-1" if not events else response
+    else:
+        if session.get('userType') == 'Admin':
+                return render_template('searchevents.html')
+        else:
+            abort(404)
+
 #TODO: Add more to create event
 @application.route('/createevent', methods=['GET', 'POST'])
 def createevent():
     if request.method == 'POST':
-        date_f = str(request.form['year'])+"-"+str(request.form['month'])+"-"+str(request.form['day'])
-        stime_f = str(request.form['hour'])+":"+str(request.form['minute'])+":00"
-        etime_f = str(int(request.form['hour'])+6)+":"+str(request.form['minute'])+":00"
+        date_f = str(request.form['date'])
+        stime_f = str(request.form['shour'])+":"+str(request.form['sminute'])+":00"
+        etime_f = str(int(request.form['ehour']))+":"+str(request.form['eminute'])+":00"
 
         hostres = db.executeQuery("select user_id from user where username='" + str(session.get('username')) + "';")
         host_id = "User Not Found" if hostres is None else hostres[0][0]
@@ -186,8 +215,9 @@ def createevent():
         'school_id': request.form['school_id'], 'host_id': host_id,
         'time_start': stime_f, 'time_end': etime_f,
         'date': date_f, 'size': 123,
-        'event_type': 'Public', 'event_price': 20.00,
+        'event_type': request.form['event_type'], 'event_price': 20.00,
         'description': request.form['description']}
+        print(event)
         db.executeQuery("""
             insert into event(event_name, facility_id, school_id, host_id, time_start, time_end, date, size, event_type, event_price, description)
             values('{event_name}', '{facility_id}', '{school_id}', '{host_id}', '{time_start}', '{time_end}', '{date}', '{size}', '{event_type}', '{event_price}', '{description}');
@@ -296,7 +326,7 @@ def checkInput(stringInput):
     #remove slashes
     #stringInput.decode('string_ecape')
 
-    
+
 # run the app.
 if __name__ == "__main__":
     # Setting debug to True enables debug output. This line should be

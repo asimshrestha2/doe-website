@@ -68,16 +68,31 @@
           Event Hosted by: <a href="/u/{{ event.host }}">{{ event.host }}</a>
         </div>
         {% if session['username'] and session['userType'] %}
-        <div class="invite-options">
+        <!--<div class="invite-options">
           <div class="invite-btn">Going</div>
           <div class="invite-btn">Ignore</div>
+        </div>-->
+        <div class="invite-options">
+          <form action="/charge" method="post">
+            <script src="https://checkout.stripe.com/v2/checkout.js" class="stripe-button"
+            data-key="{{ key }}"
+            data-amount="999"
+            data-name="Payment for {{ eventname }}"
+            data-description= "Donation for {{ eventname }} hosted by {{ host }}"
+            data-image="http://img14.deviantart.net/1a61/i/2017/056/5/c/boundary_guard_beast_by_ariduka-db0bcmt.jpg"
+            data-locale="auto"
+            data-label="Donate"
+            data-panel-label="Donate">
+            </script>
+          </form>
         </div>
         {% endif %}
       </div>
       <div>
         {% if session['username'] and session['userType'] %}
+        <!--<div class="invite-options">
         <form action="/charge" method="post">
-          <script src="https://checkout.stripe.com/v2/checkout.js" class="stripe-button" 
+          <script src="https://checkout.stripe.com/v2/checkout.js" class="stripe-button"
           data-key="{{ key }}"
           data-amount="999"
           data-name="Payment for {{ eventname }}"
@@ -87,7 +102,7 @@
           data-label="Donate"
           data-panel-label="Donate">
           </script>
-        </form>
+        </form>-->
         {% endif %}
       </div>
       <div class="description">
