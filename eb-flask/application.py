@@ -3,8 +3,10 @@ import os
 import sys
 import MySQLdb
 import datetime
+import stripe
 from werkzeug.utils import secure_filename
-import dbconnection
+from dbconnection import DBManager
+from stripeconnection import StripeManager
 import calendarf
 import eventmanager
 import urllib.parse as urllib
@@ -14,7 +16,13 @@ from event import Event
 # EB looks for an 'application' callable by default.
 application = Flask(__name__)
 #instantiate DBManager
-db = dbconnection.DBManager()
+db = DBManager()
+stripeM = StripeManager()
+#set secret key
+
+# set the secret key.  keep this really secret:
+#TODO: Change FLASK secret_key
+application.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 
 @application.route('/')
 def hello():
@@ -24,11 +32,10 @@ def hello():
 @application.route('/u/<name>')
 def user(name=None):
     # This what the template needs to show all the data on the site
-    userres = db.executeQuery("select * from user where username='" + str(name) + "';")
+    userres = db.executeQuery(db.selectUserQuery.format(str(name)))
     user = None if userres is None else userres[0]
-
-    equery = "select event_id, event_name, description from event where host_id=" + str(user[0])+";"
-    evertres = db.executeQuery(equery)
+    
+    evertres = db.executeQuery(db.selectUserEventQuery.format(str(user[0])))
     events = None if evertres is None else evertres
 
     user = {'name': user[1], 'title': user[5],
@@ -57,22 +64,31 @@ def event(id=None, name=None):
             return redirect(url_for('hello'))
         else:
             event = {}
-            query = "select * from event where event_id = " + str(id) + " and event_name='"+ name +"'"
-            result = db.executeQuery(query)
+            #query for getting event information based on name and id
+            result = db.executeQuery(db.selectEventQueryD.format(str(id),name))
             if result:
                 result = result[0]
-                hostres = db.executeQuery("select username from user where user_id=" + str(result[4]) + ";")
+                #get host information
+                hostres = db.executeQuery(db.selectHostQuery.format(str(result[4])))
                 host = "User Not Found" if hostres is None else hostres[0][0]
-                schoolres = db.executeQuery("select school_id, school_name, school_address from school where school_id=" + str(result[3]) + ";")
-                school = {'school_name':"Location Not Found"} if schoolres is None else {'school_id': schoolres[0][0],
-                        'school_name':schoolres[0][1], 'school_address':schoolres[0][2]}
-                event = {'id': result[0], 'name': result[1], 'school': school,
+                schoolres = db.executeQuery(db.schoolInfoQuery.format(str(result[3])))
+                if schoolres is None:          
+                    school = {'school_name':"Location Not Found"}
+                else:
+                    schoolres = schoolres[0]
+                    fName = db.executeQuery(db.selectFName.format(result[2],result[3]))[0][0]
+                    school = {'school_id': schoolres[0], 'school_name':schoolres[1], 'school_address':schoolres[2] + ' in facility ' + fName}
+                    event = {'id': result[0], 'name': result[1], 'school': school,
                     'host': host, 'time_start': result[5], 'description': result[11],
                     'event_price': result[10], 'pictureUrl': 'https://asimshrestha2.github.io/imgs/content/environment.png' }
+                    #since these variables are needed for payment, make sure donation is only on this page so people won't somehow donate to another event
+                    session['eid'] = result[0]
+                    session['ename'] = result[1]
+                    session['state'] = schoolres[3]
+                return render_template('eventpage.html', event=event, eventname = name, host = host, key='pk_test_Wb0XXIL9w6ez0dqn0z4JLIg4')
             else:
                 abort(404)
-            return render_template('eventpage.html', event=event)
-
+            
 # Function for all the login user page
 @application.route('/login', methods=['GET', 'POST'])
 def login():
@@ -115,11 +131,14 @@ def signup():
         username = checkInput(request.form['username'])
         password = checkInput(request.form['password'])
         user_address = checkInput(request.form['address'])
-        #execute query to see if valid username password combo
+        isUserExist = db.executeQuery(db.chkUsernameQuery.format(username))
+         #invariant: No username's can be the same
+        if result is not None: #then we already have this username
+            return "-2"
         row1 = db.executeQuery(db.registerQuery.format(name,email,phone_num,uzip,user_type,username,password,user_address,0))
         #create some session variables with data that will be used frequently
         if row1:
-            # Returns if no user
+            # Returns if query somehow returns a row which it shouldnt because we are inserting
             return "-1"
         else:
             #if sucessful will continue on, else will throw error inside executeQuery
@@ -131,15 +150,10 @@ def signup():
     else:
         return render_template('signup.html')
 
-# set the secret key.  keep this really secret:
-#TODO: Change secret_key
-application.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
-
 @application.route('/calendar', methods=['GET', 'POST'])
 def calendar():
     if request.method == 'POST':
         res = calendarf.getweekevents()
-        print(res)
         response = application.response_class(
             response=json.dumps(res),
             status=200,
@@ -244,6 +258,21 @@ def getfacilitiesforschool():
     )
     return response
 
+# TODO: Handle the Money API
+
+@application.route('/test')
+def test():
+    #if you want emails to be set to the ones you logged in with, uncomment the comments below
+    #emailRes = db.executeQuery(db.getUserEmailQuery.format(session['username']))[0][0]
+    stripeM.balance()
+    return render_template('test.html', key='pk_test_Wb0XXIL9w6ez0dqn0z4JLIg4')#, email = emailRes)
+
+@application.route('/charge', methods=['POST'])
+def charge():
+# Amount in cents
+    stripeM.errhandlingwrapper(stripeM.charge())
+    return render_template('charge.html')
+
 @application.errorhandler(404)
 def page_not_found(error):
     return render_template('404.html'), 404
@@ -267,8 +296,7 @@ def checkInput(stringInput):
     #remove slashes
     #stringInput.decode('string_ecape')
 
-# TODO: Handle the Money API
-
+    
 # run the app.
 if __name__ == "__main__":
     # Setting debug to True enables debug output. This line should be

@@ -74,6 +74,22 @@
         </div>
         {% endif %}
       </div>
+      <div>
+        {% if session['username'] and session['userType'] %}
+        <form action="/charge" method="post">
+          <script src="https://checkout.stripe.com/v2/checkout.js" class="stripe-button" 
+          data-key="{{ key }}"
+          data-amount="999"
+          data-name="Payment for {{ eventname }}"
+          data-description= "Donation for {{ eventname }} hosted by {{ host }}"
+          data-image="http://img14.deviantart.net/1a61/i/2017/056/5/c/boundary_guard_beast_by_ariduka-db0bcmt.jpg"
+          data-locale="auto"
+          data-label="Donate"
+          data-panel-label="Donate">
+          </script>
+        </form>
+        {% endif %}
+      </div>
       <div class="description">
         <p>{{ event.description }}</p>
       </div>

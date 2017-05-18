@@ -31,7 +31,6 @@
     request.onreadystatechange = function(e) {
       if(request.readyState == XMLHttpRequest.DONE && request.status == 200) {
         var data = JSON.parse(request.responseText);
-        console.log(data);
         for (var i = 0; i < data.length; i++) {
           clist.innerHTML += '<li><div class="list-header">' +
             '<div class="title">'+data[i]['date']+'</div>' +
